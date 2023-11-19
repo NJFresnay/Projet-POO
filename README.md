@@ -131,13 +131,13 @@ Enfin, chaque binôme rebascule son dépot github en privé le 6/12/2023.
 ------------------------
 
 En utilisant la bibliothèque choisie, concevoir une application `bibli` s’utilisant comme :
-
+````
 $ ./bibli https://math.univ-angers.fr/~jaclin/biblio/livres 1
-
+````
 pour lancer une collecte de profondeut 1 visant à compléter la bibliothèque, et :
-
+````
 $ ./bibli rapports
-
+````
 pour générer les 2x2 rapports au format EPUB et PDF \[[3](#_footnotedef_3 "View footnote.")\].
 
 L’application utilise un fichier de configuration `bibli.conf` contenant :
