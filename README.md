@@ -1,6 +1,6 @@
 # Projet-POO
-Réalisation du projet de fin de POO ( Rayane JAFFAL et Jennifer NGOUNA)
-Prof. Jacquelin Charbonel
+Réalisation du projet de fin de POO ( Rayane JAFFAL et Jennifer NGOUNA)   
+Prof. Jacquelin Charbonel   
 Université d'Angers
 
 Collecte de livres
