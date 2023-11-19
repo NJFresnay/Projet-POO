@@ -21,7 +21,7 @@ Respecter scrupuleusement les dates, il ne pourra pas y avoir de prolongation.
 --------------------------
 
 La classe abstraite ci-dessous modélise un livre :
-
+````python
     class base_livre:
       def __init__(self,ressource):
         """
@@ -53,11 +53,12 @@ La classe abstraite ci-dessous modélise un livre :
       def date(self):
         """ renvoie la date de publication du livre """
         raise NotImplementedError("à définir dans les sous-classes")
+````
 
 Elle est destinée à servir de classe de base aux différents types de livres pouvant se trouver dans la bibilothèque (donc des livres au format EPUB et PDF dans un premier temps).
 
 La classe abstraite ci-dessous modélise la bibliothèque :
-
+````python
     class base_bibli:
       def __init__(self,path):
         """ path désigne le répertoire contenant les livres de cette bibliothèque """
@@ -92,6 +93,7 @@ La classe abstraite ci-dessous modélise la bibliothèque :
             fichier: nom du fichier généré
         """
         raise NotImplementedError("à définir dans les sous-classes")
+````
 
 Elle est destinée à servir de classe de base à la classe qui implémentera réellement les traitements.
 
