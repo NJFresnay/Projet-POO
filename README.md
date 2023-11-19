@@ -152,19 +152,19 @@ L’application utilise un fichier de configuration `bibli.conf` contenant :
 Exemple :
 
 fichier biblio.conf
-
+````
 bibliotheque=/tmp/bibli/livres
 etats=/tmp/bibli/etats
 nbmax=1000
-
+````
 Pour permettre à l’application de pouvoir gérer plusieurs jeux de paramètres (par exemple plusieurs bibliothèques), le nom du fichier de configuration peut être spécifié avec l’option `-c`. Par exemple :
-
+````
 $ ./bibli -c bibli2.conf https://math.univ-angers.fr/~jaclin/biblio/livres 1
-
+````
 ou bien
-
+````
 $ ./bibli -c bibli2.conf rapports
-
+````
 Rédiger une petite documentation d’une page pour les utilisateurs de l’application (guide d’utilisation). Ne pas oublier de mentionner le binôme auprès duquel la partie I a été récupérée.
 
 Chacun des 2 binômes dépose alors ses codes sources, le fichier de configuration et la documentation sur son espace Moodle, et part en vacance de Noël la tête vidée.
