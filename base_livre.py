@@ -9,7 +9,7 @@ from pypdf import PdfReader #pip install pypdf #pypdf 3.17.1
 
 class base_livre:
     def __init__(self,ressource):
-        self.ressource = ressoure
+        self.ressource = ressource
         if not os.path.exists(ressource):
             raise FileNotFoundError(f"Ce file '{ressource}' n'existe pas.")
 
