@@ -1,6 +1,6 @@
 import os
-from ebooklib import epub  #librairie pour traiter les documents de type "ebook"
-from pypdf import PdfReader #librairie pour traiter les documents de type "pdf"
+from ebooklib import epub  #librairie pour traiter les documents de type "ebook" ##c'est de type "epub"
+from pypdf import PdfReader #librairie pour traiter les documents de type "pdf" ##j'ai ajouté les version pir determiner les libraries
 
 class base_livre:
     def __init__(self,ressource):
@@ -8,7 +8,7 @@ class base_livre:
         if not os.path.exists(ressource): #vérification de l'existance du path
             raise FileNotFoundError(f"Ce fchier n'existe pas!")
 
-    def type(self):
+    def type(self): ##oui je pense que c'est toujours à la fin
         # fichier_extension = os.path.splitext(self.ressource)[1].lower() #détecte l'extension du fichier
         # self.fichier_type = fichier_extension
         if self.ressource.endswith(".pdf"):
@@ -16,7 +16,7 @@ class base_livre:
         elif self.ressource.endswith(".epub")":
             return EPUB
         else:
-            raise ValueError("format non pris en charge")
+            raise ValueError("format non pris en charge") #NotImplementedError: c à d pas supporté encore pas applicable
 
     def titre(self):
         return self.type()(self.ressource).titre()
@@ -57,10 +57,10 @@ class PDF(base_livre):
         livre = PdfReader(self.path)
         return livre.metadata.creation_date
 
-    def __repr__(self):
+    def __repr__(self): ##déja c'est pas automatique par les methodes ci dessus?
         return self.titre(), self.auteur(), self.Type(), self.date(), self.sujet()
 
-    def __str__(self):
+    def __str__(self): ##est ce qu on a besoi d'introduire cette fonction à ce stage
         return f"Titre: {self.titre()}, \nAuteur(s): {self.auteur()},\nType de fichier: {self.type()}, \nDate de publication: {self.date()}"
 
 class EPUB(base_livre):
@@ -87,7 +87,7 @@ class EPUB(base_livre):
         livre = epub.read_epub(self.path)
         return livre.get_metadata("DC","date")
 
-# def extract_metadata_epub(epub_path):
+# def extract_metadata_epub(epub_path): ##dans la description des libraries si les metadata n'existe pas il v return automatiquement None
 #     book = epub.read_epub(epub_path)
 #     metadata = {
 #         'title': book.get_metadata('DC', 'title')[0][0] if book.get_metadata('DC', 'title') else None,
