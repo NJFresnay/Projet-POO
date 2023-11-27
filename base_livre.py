@@ -61,7 +61,7 @@ class PDF(base_livre):
         return self.titre(), self.auteur(), self.Type(), self.date(), self.sujet()
 
     def __str__(self):
-        return f"Titre: {self.titre()}, \nAuteur(s): {self.auteur()},\nType de fichier: {self.Type()}, \nDate de publication: {self.date()}"
+        return f"Titre: {self.titre()}, \nAuteur(s): {self.auteur()},\nType de fichier: {self.type()}, \nDate de publication: {self.date()}"
 
 class EPUB(base_livre):
     
