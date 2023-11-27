@@ -4,6 +4,7 @@
 
 import io #lire URL
 import os
+import requests
 from ebooklib import epub  #librairie pour traiter les documents de type "epub" #pip install EbookLib #EbookLib 0.18
 from pypdf import PdfReader #librairie pour traiter les documents de type "pdf" #pip install pypdf #pypdf 3.17.1
 
