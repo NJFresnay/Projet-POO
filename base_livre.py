@@ -10,11 +10,11 @@ from pypdf import PdfReader #pip install pypdf #pypdf 3.17.1
 class base_livre:
     def __init__(self,ressource):
         self.ressource = ressource
-        if not os.path.exists(ressource):
+        if not os.path.exists(ressource): #si le path n'existe pas
             raise FileNotFoundError(f"Ce file '{ressource}' n'existe pas.")
 
     def type(self):
-        fichier_extension = os.path.splitext(self.ressource)[1].lower()
+        fichier_extension = os.path.splitext(self.ressource)[1].lower() #detecter l'extension du fichier: exemple: .pdf ou .epub
         self.fichier_type = fichier_extension
         
         if self.fichier_type == ".pdf":
@@ -53,10 +53,11 @@ class PDF(base_livre):
         return livre.metadata.author
 
     def langue(self):
-        return None
+        return None #pas de metadata pour la langue #selon la documentation de cette librarie python
 
     def sujet(self):
-        return None
+        livre = PdfReader(self.path)
+        return livre.metadata.subject
 
     def date(self):
         livre = PdfReader(self.path)
@@ -80,7 +81,7 @@ class EPUB(base_livre):
         return livre.get_metadata("DC","language")
     
     def sujet(self):
-        return None
+        return None #selon le documentation y a pas de metadata pour le sujet
 
     def date(self):
         livre = epub.read_epub(self.path)
