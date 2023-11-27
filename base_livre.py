@@ -13,7 +13,7 @@ class base_livre:
         # self.fichier_type = fichier_extension
         if self.ressource.endswith(".pdf"):
             return PDF
-        elif self.ressource.endswith(".epub")":
+        elif self.ressource.endswith(".epub"):
             return EPUB
         else:
             raise ValueError("format non pris en charge") #NotImplementedError: c à d pas supporté encore pas applicable
@@ -39,22 +39,22 @@ class PDF(base_livre):
         return "PDF"
 
     def titre(self):
-        livre = PdfReader(self.path)
+        livre = PdfReader(self.ressource)
         return livre.metadata.title
 
     def auteur(self):
-        livre = PdfReader(self.path)
+        livre = PdfReader(self.ressource)
         return livre.metadata.author
 
     def langue(self):
         raise AttributeError("Information non fournie selon la documentation")
 
     def sujet(self):
-        livre = PdfReader(self.path)
+        livre = PdfReader(self.ressource)
         return livre.metadata.subject
 
     def date(self):
-        livre = PdfReader(self.path)
+        livre = PdfReader(self.ressource)
         return livre.metadata.creation_date
 
     def __repr__(self): ##déja c'est pas automatique par les methodes ci dessus?
@@ -69,23 +69,23 @@ class EPUB(base_livre):
         return "EPUB"
 
     def titre(self):
-        livre = epub.read_epub(self.path)
-        return livre.get_metadata("DC","title")
+        livre = epub.read_epub(self.ressource)
+        return livre.get_metadata("DC","title")[0][0] ##j'ai ajouté les index comme tu as ajouté ci dessous
 
     def auteur(self):
-        livre = epub.read_epub(self.path)
-        return livre.get_metadata("DC","creator")
+        livre = epub.read_epub(self.ressource)
+        return livre.get_metadata("DC","creator")[0][0]
 
     def langue(self):
-        livre = epub.read_epub(self.path)
-        return livre.get_metadata("DC","language")
+        livre = epub.read_epub(self.ressource)
+        return livre.get_metadata("DC","language")[0][0]
     
     def sujet(self):
-        raise AttributeError("Information non fournie selon la documentation")
+        raise AttributeError("Information non fournie!")#selon le documentation y a pas de metadata pour le sujet
 
     def date(self):
-        livre = epub.read_epub(self.path)
-        return livre.get_metadata("DC","date")
+        livre = epub.read_epub(self.ressource)
+        return livre.get_metadata("DC","date")[0][0]
 
 # def extract_metadata_epub(epub_path): ##dans la description des libraries si les metadata n'existe pas il v return automatiquement None
 #     book = epub.read_epub(epub_path)
