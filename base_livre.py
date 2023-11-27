@@ -1,22 +1,23 @@
+#!env/bin/ python3
+#classe base_livre
+#sous classes: PDF, EPUB
+
+import io #lire URL
 import os
-from ebooklib import epub  #librairie pour traiter les documents de type "ebook" ##c'est de type "epub"
-from pypdf import PdfReader #librairie pour traiter les documents de type "pdf" ##j'ai ajouté les version pir determiner les libraries
+from ebooklib import epub  #librairie pour traiter les documents de type "epub" #pip install EbookLib #EbookLib 0.18
+from pypdf import PdfReader #librairie pour traiter les documents de type "pdf" #pip install pypdf #pypdf 3.17.1
 
 class base_livre:
     def __init__(self,ressource):
         self.ressource = ressource
-        if not os.path.exists(ressource): #vérification de l'existance du path
-            raise FileNotFoundError(f"Ce fchier n'existe pas!")
-
-    def type(self): ##oui je pense que c'est toujours à la fin
-        # fichier_extension = os.path.splitext(self.ressource)[1].lower() #détecte l'extension du fichier
-        # self.fichier_type = fichier_extension
+        
+    def type(self): #j'ai changé ca comme tu as proposé
         if self.ressource.endswith(".pdf"):
             return PDF
         elif self.ressource.endswith(".epub"):
             return EPUB
         else:
-            raise ValueError("format non pris en charge") #NotImplementedError: c à d pas supporté encore pas applicable
+            raise NotImplementedError("Unsupported file format")
 
     def titre(self):
         return self.type()(self.ressource).titre()
@@ -34,6 +35,18 @@ class base_livre:
         return self.type()(self.ressource).date()
 
 class PDF(base_livre):
+
+    def __init__(self, ressource):
+        self.ressource = ressource
+        if "://" in self.ressource:
+            response = requests.get(self.ressource)
+            if response.status_code == 200:
+                self.ressource = io.BytesIO(response.content)
+            else:
+                raise FileNotFoundError("ressource inaccessible")
+        else:
+            if not os.path.exists(self.ressource):
+                raise FileNotFoundError(f"File '{self.ressource}' does not exist.")
     
     def type(self):
         return "PDF"
@@ -47,7 +60,8 @@ class PDF(base_livre):
         return livre.metadata.author
 
     def langue(self):
-        raise AttributeError("Information non fournie selon la documentation")
+        #return None
+        raise NotImplementedError("Information non fournie!")
 
     def sujet(self):
         livre = PdfReader(self.ressource)
@@ -65,6 +79,21 @@ class PDF(base_livre):
 
 class EPUB(base_livre):
     
+    def __init__(self,ressource):
+        self.ressource = ressource
+        if "://" in self.ressource:
+            response = requests.get(self.ressource)
+            # Raise an exception for bad responses and bad links
+            if response.status_code == 200:
+                self.ressource = io.BytesIO(response.content)
+            else:
+                raise FileNotFoundError("ressource inaccessible")
+
+        # Check if the resource is a file path
+        else:
+            if not os.path.exists(self.ressource):
+                raise FileNotFoundError(f"File '{self.ressource}' does not exist.")
+
     def type(self):
         return "EPUB"
 
@@ -81,7 +110,8 @@ class EPUB(base_livre):
         return livre.get_metadata("DC","language")[0][0]
     
     def sujet(self):
-        raise AttributeError("Information non fournie!")#selon le documentation y a pas de metadata pour le sujet
+        #return None
+        raise NotImplementedError("Information non fournie!")#selon le documentation y a pas de metadata pour le sujet
 
     def date(self):
         livre = epub.read_epub(self.ressource)
