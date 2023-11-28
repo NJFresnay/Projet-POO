@@ -41,7 +41,7 @@ class PDF(base_livre):
         if "://" in self.ressource:
             response = requests.get(self.ressource)
             if response.status_code == 200:
-                self.ressource = PdfReader(io.BytesIO(response.content))
+                self.ressource = PdfReader(io.BytesIO(response.content),verify=False)
             else:
                 raise FileNotFoundError("ressource inaccessible")
         else:
@@ -75,7 +75,7 @@ class EPUB(base_livre):
             response = requests.get(self.ressource)
             # Raise an exception for bad responses and bad links
             if response.status_code == 200:
-                self.ressource = epub.read_epub(io.BytesIO(response.content))
+                self.ressource = epub.read_epub(io.BytesIO(response.content),verify=False)
             else:
                 raise FileNotFoundError("ressource inaccessible")
 
