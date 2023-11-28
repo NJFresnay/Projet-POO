@@ -13,9 +13,9 @@ class base_livre:
         
     def type(self): #j'ai changé ca comme tu as proposé
         if self.ressource.endswith(".pdf"):
-            return PDF
+            return "PDF"
         elif self.ressource.endswith(".epub"):
-            return EPUB
+            return "EPUB"
         else:
             raise NotImplementedError("format non pris en charge!")
 
@@ -86,7 +86,7 @@ class EPUB(base_livre):
             self.ressource = epub.read_epub(self.ressource)
 
     def type(self):
-        return str("EPUB")
+        return "EPUB"
 
     def titre(self):
         return self.ressource.get_metadata("DC","title")[0][0]
