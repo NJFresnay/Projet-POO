@@ -13,9 +13,9 @@ class base_livre:
         
     def type(self): #j'ai changé ca comme tu as proposé
         if self.ressource.endswith(".pdf"):
-            return "PDF"
+            return PDF
         elif self.ressource.endswith(".epub"):
-            return "EPUB"
+            return EPUB
         else:
             raise NotImplementedError("format non pris en charge!")
 
@@ -37,11 +37,11 @@ class base_livre:
 class PDF(base_livre):
 
     def __init__(self, ressource):
-        super().__init__(ressource)
+        self.ressource = ressource
         if "://" in self.ressource:
-            response = requests.get(self.ressource)
+            response = requests.get(self.ressource, verify=False)
             if response.status_code == 200:
-                self.ressource = PdfReader(io.BytesIO(response.content),verify=False)
+                self.ressource = PdfReader(io.BytesIO(response.content))
             else:
                 raise FileNotFoundError("ressource inaccessible")
         else:
@@ -70,12 +70,12 @@ class PDF(base_livre):
 class EPUB(base_livre):
     
     def __init__(self,ressource):
-        super().__init__(ressource)
+        self.ressource = ressource
         if "://" in self.ressource:
-            response = requests.get(self.ressource)
+            response = requests.get(self.ressource,verify=False)
             # Raise an exception for bad responses and bad links
             if response.status_code == 200:
-                self.ressource = epub.read_epub(io.BytesIO(response.content),verify=False)
+                self.ressource = epub.read_epub(io.BytesIO(response.content))
             else:
                 raise FileNotFoundError("ressource inaccessible")
 
@@ -98,7 +98,7 @@ class EPUB(base_livre):
         return self.ressource.get_metadata("DC","language")[0][0]
     
     def sujet(self):
-        return None #selon le documentation y a pas de metadata pour le sujet
+        return return NotImplementedError(None) #selon le documentation y a pas de metadata pour le sujet
 
     def date(self):
         return self.ressource.get_metadata("DC","date")[0][0]
