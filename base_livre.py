@@ -98,7 +98,7 @@ class EPUB(base_livre):
         return self.ressource.get_metadata("DC","language")[0][0]
     
     def sujet(self):
-        return return NotImplementedError(None) #selon le documentation y a pas de metadata pour le sujet
+        return NotImplementedError(None) #selon le documentation y a pas de metadata pour le sujet
 
     def date(self):
         return self.ressource.get_metadata("DC","date")[0][0]
