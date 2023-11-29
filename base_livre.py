@@ -59,8 +59,7 @@ class PDF(base_livre):
         return self.ressource.metadata.author
 
     def langue(self):
-        return NotImplementedError(None) #pas de metadata pour la langue #selon la documentation de cette librarie python
-
+        return NotImplementedError(None) 
     def sujet(self):
         return self.ressource.metadata.subject
 
