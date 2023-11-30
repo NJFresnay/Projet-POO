@@ -2,7 +2,10 @@ import base_livre
 import shutil
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
-
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+import pdfkit
 import urllib3
 import os
 import pandas as pd
@@ -16,7 +19,14 @@ class base_bibli:
 
     def ajouter(self,livre):
         """Ajoute le livre à la bibliothèque """
-        pass
+        if isinstance(livre, Base_livre.PDF):
+            un_livre = Base_livre.PDF(livre.ressource)
+            self.livres.append(un_livre)
+
+        elif isinstance( livre, Base_livre.EPUB):
+            un_livre = Base_livre.EPUB(livre.ressource)
+            self.livres.append(un_livre)
+
 
     def rapport_livres(self,format,fichier):
         """
@@ -48,50 +58,47 @@ class simple_bibli(base_bibli):
 
     def __init__(self,path):
         super().__init__(path)
-        self.livres = []
-        for i in os.listdir(self.path): # permet d'accéder aux éléments de mon repertoire
-            chemin_file = os.path.join(self.path, i)
-            livre = base_livre.base_livre(chemin_file)
-            self.livres.append(livre)
-        #     print(livre)
-        # #     # df = pd.DataFrame(self.livres,index=[i for i in range(0, len(os.listdir(self.path)))] ,columns=['titre','auteur','type', 'nom du fichier'])
-        # #     # df.reset_index(inplace=True)
-        # print(self.livres)
+
 
     def rapport_livres(self, format, fichier):
         try:
             if format == "PDF":
-                # with open(fichier, "w", encoding='utf-8') as pdfFile:
-                #     pdfFile.write("Etat des livres de la bibliotheque:")
-                #     for i in os.listdir(self.path): # permet d'accéder aux éléments de mon repertoire
-                #         chemin_file = os.path.join(self.path, i)
-                #         livre = base_livre.base_livre(chemin_file)
-                #         ll = f"{livre.titre()}, {livre.auteur()}, {livre.sujet()}, {i}"
-                #         pdfFile.write(ll)
-                #     pdfFile.close()
+                c = canvas.Canvas(fichier)
+                # Ajouter du texte avec une police spécifique et une taille de police
+                c.setFont("Helvetica", 30)
+                c.drawString(200, 790, " Etat des livres")
+                c.setFont("Helvetica", 12)
+                x_pos = 50
+                y_pos = 750
+                # Taille de la police
+                font_size = 11
+                c.setFont("Helvetica", font_size)
 
+                livres = []
+                lines= []
+                k = 0
+                for i in os.listdir(self.path): # permet d'accéder aux éléments de mon répertoire
+                    chemin_file = os.path.join(self.path, i)
+                    livre = base_livre.base_livre(chemin_file)
+                    livres.append(livre)
+                for livre in livres:
+                    ll = [
+                        f"{livre.titre()}",
+                        f"{livre.auteur()}",
+                        f"{livre.sujet()}",
+                        f"{livre.langue()}"
+                    ]
+                    lines.append(ll)
 
-### encore un problème d'affichage avec le rapport en PDF. A revoir
-                with open(fichier, "wb") as pdfFile:
-                    pdf = canvas.Canvas(pdfFile, pagesize=letter)
-                     # Spécifier la police et la taille du texte
-                    pdf.setFont("Helvetica", 20)
-
-                    # Ajouter le titre du rapport
-                    pdf.drawString(230, 700, "Etats des livres")
-                    # Ajouter d'autres détails du rapport
-                    for i in os.listdir(self.path): # permet d'accéder aux éléments de mon repertoire
-                        chemin_file = os.path.join(self.path, i)
-                        livre = base_livre.base_livre(chemin_file)
-                        ll = f"{livre.titre()}\n"
-                        # Coordonnées Y pour les lignes suivantes
-                        y_coord = 350
-                        # Ajouter les lignes de texte
-                        pdf.drawString(100, y_coord, ll)
-                        y_coord += 100  # Ajuster l'espacement entre les lignes
-                    # Enregistrer le fichier PDF
-                    pdf.save()
-                    print(f"Rapport généré au format {format}, nom du fichier : {fichier}")
+                for line in lines:
+                    c.drawString(x_pos, y_pos,', '.join(line))
+                    # Déplacer la position verticalement pour la prochaine ligne
+                    y_pos -= 20  # Ajouter un espace entre les lignes
+                    #c.line(50, 700 - k, 550, 700 -k)
+                    k += 60
+                # Enregistrer le fichier PDF
+                c.save()
+                print(f"Rapport généré au format {format}, nom du fichier : {fichier}")
 
             elif format == "EPUB":
 
@@ -120,8 +127,7 @@ class simple_bibli(base_bibli):
 
                 # Créez une section pour le rapport
                 section = epub.EpubHtml(title="Rapport Livres", file_name="rapport.html", lang="fr")
-                        #section.content = self._generer_contenu_rapport_epub()
-                section.content = _generer_contenu_html(self)
+                section.content = _generer_contenu_html(self) # defini le contenu de la section
                 # Ajoutez la section au livre
                 book.add_item(section)
                 # Ajoutez la section au livre comme une sorte de contenu
@@ -133,8 +139,6 @@ class simple_bibli(base_bibli):
 
         except IOError:
             raise NotImplementedError(" format non pris en charge ")
-
-
 
 
 
