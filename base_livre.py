@@ -37,7 +37,7 @@ class base_livre:
 class PDF(base_livre):
 
     def __init__(self, ressource):
-        self.ressource = ressource
+        super().__init__(ressource)
         if "://" in self.ressource:
             response = requests.get(self.ressource, verify=False)
             if response.status_code == 200:
@@ -50,7 +50,7 @@ class PDF(base_livre):
             self.ressource = PdfReader(self.ressource)
     
     def type(self):
-        return "PDF"
+        return print("PDF")
 
     def titre(self):
         return self.ressource.metadata.title
@@ -69,7 +69,7 @@ class PDF(base_livre):
 class EPUB(base_livre):
     
     def __init__(self,ressource):
-        self.ressource = ressource
+        super().__init__(ressource)
         if "://" in self.ressource:
             response = requests.get(self.ressource,verify=False)
             # Raise an exception for bad responses and bad links
@@ -85,7 +85,7 @@ class EPUB(base_livre):
             self.ressource = epub.read_epub(self.ressource)
 
     def type(self):
-        return "EPUB"
+        return ("EPUB")
 
     def titre(self):
         return self.ressource.get_metadata("DC","title")[0][0]
