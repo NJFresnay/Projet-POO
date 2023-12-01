@@ -50,7 +50,7 @@ class PDF(base_livre):
             self.ressource = PdfReader(self.ressource)
     
     def type(self):
-        return print("PDF")
+        print("PDF")
 
     def titre(self):
         return self.ressource.metadata.title
@@ -85,7 +85,7 @@ class EPUB(base_livre):
             self.ressource = epub.read_epub(self.ressource)
 
     def type(self):
-        return ("EPUB")
+        print("EPUB")
 
     def titre(self):
         return self.ressource.get_metadata("DC","title")[0][0]
