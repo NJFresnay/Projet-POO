@@ -15,11 +15,12 @@ class bibli_scrap:
         soup = BeautifulSoup(html_page, "html.parser")
         livres_urls = []
     
-        for l in soup.find_all("a",):
+        for l in soup.find_all("a",) and for i in range(self.nbmax):
             lien = l.get('href', [])
             if lien.endswith('.pdf') or lien.endswith('.epub'):
                 try:
-                   ## lien = "https://" + lien
+                    if 'http' not in lien:
+                        lien = '{}{}'.format(site,lien) #to handle schema invalid error
                     reponse = requests.get(lien)
                     with open(l.title, mode="wb") as file:
                         file.write(reponse.content)
