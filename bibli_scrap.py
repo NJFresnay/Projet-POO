@@ -15,7 +15,7 @@ class bibli_scrap:
         soup = BeautifulSoup(html_page, "html.parser")
         livres_urls = []
     
-        for l in soup.find_all("a",) and for i in range(self.nbmax):
+        for l in soup.find_all("a") and i in range(self.nbmax):
             lien = l.get('href', [])
             if lien.endswith('.pdf') or lien.endswith('.epub'):
                 try:
