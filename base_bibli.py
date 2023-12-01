@@ -1,17 +1,14 @@
 import base_livre
 import shutil
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Paragraph
 import pdfkit
 import urllib3
 import os
 import pandas as pd
 from ebooklib import epub
+from weasyprint import HTML
 
-# la classe base_biblio
+# la classe base_bibli
+
 class base_bibli:
     def __init__(self,path):
         """ path désigne le répertoire contenant les livres de cette bibliothèque """
@@ -19,14 +16,10 @@ class base_bibli:
 
     def ajouter(self,livre):
         """Ajoute le livre à la bibliothèque """
-        if isinstance(livre, Base_livre.PDF):
-            un_livre = Base_livre.PDF(livre.ressource)
-            self.livres.append(un_livre)
-
-        elif isinstance( livre, Base_livre.EPUB):
-            un_livre = Base_livre.EPUB(livre.ressource)
-            self.livres.append(un_livre)
-
+        if isinstance(livre, Base_livre.PDF) or  isinstance(livre, Base_livre.EPUB):
+            shutil.copy(livre.ressource, self.path)
+            print(" Ajout effectué avec succès! ")
+        raise NotImplementedError(" format non pris en charge ")
 
     def rapport_livres(self,format,fichier):
         """
@@ -59,65 +52,13 @@ class simple_bibli(base_bibli):
     def __init__(self,path):
         super().__init__(path)
 
-
-    def rapport_livres(self, format, fichier):
+    def rapport_livres(self, Format, fichier):
         try:
             if format == "PDF":
-                c = canvas.Canvas(fichier)
-                # Ajouter du texte avec une police spécifique et une taille de police
-                c.setFont("Helvetica", 30)
-                c.drawString(200, 790, " Etat des livres")
-                c.setFont("Helvetica", 12)
-                x_pos = 50
-                y_pos = 750
-                # Taille de la police
-                font_size = 11
-                c.setFont("Helvetica", font_size)
-
-                livres = []
-                lines= []
-                k = 0
-                for i in os.listdir(self.path): # permet d'accéder aux éléments de mon répertoire
-                    chemin_file = os.path.join(self.path, i)
-                    livre = base_livre.base_livre(chemin_file)
-                    livres.append(livre)
-                for livre in livres:
-                    ll = [
-                        f"{livre.titre()}",
-                        f"{livre.auteur()}",
-                        f"{livre.sujet()}",
-                        f"{livre.langue()}"
-                    ]
-                    lines.append(ll)
-
-                for line in lines:
-                    c.drawString(x_pos, y_pos,', '.join(line))
-                    # Déplacer la position verticalement pour la prochaine ligne
-                    y_pos -= 20  # Ajouter un espace entre les lignes
-                    #c.line(50, 700 - k, 550, 700 -k)
-                    k += 60
-                # Enregistrer le fichier PDF
-                c.save()
+                HTML(string = self._generer_contenu_html()).write_pdf(fichier)
                 print(f"Rapport généré au format {format}, nom du fichier : {fichier}")
 
             elif format == "EPUB":
-
-                def _generer_contenu_html(self):
-                     # Récupération de nos livres:
-                    contenu_html = "<style>.li {border-bottom: 50px}</style>"
-                    contenu_html += "<h1> Etat des livres</h1>"
-                    contenu_html+="<ul>"
-                    livres = []
-                    for i in os.listdir(self.path): # permet d'accéder aux éléments de mon repertoire
-                        chemin_file = os.path.join(self.path, i)
-                        livre = base_livre.base_livre(chemin_file)
-                        livres.append(livre)
-
-                    for livre in livres:
-                        contenu_html += f"<li><div> <strong>{livre.titre()}</strong></div><div> Auteur : {livre.auteur()}</div> <div> Type :{livre.type()}</div> <div>nom_fichier : {livre.ressource}</div></li>"
-                    contenu_html += "</ul>"
-                    return contenu_html
-
                 book = epub.EpubBook() # crée l'objet  de type EPUB
 
                 #Ajout des metadonnées à notre livre
@@ -127,7 +68,7 @@ class simple_bibli(base_bibli):
 
                 # Créez une section pour le rapport
                 section = epub.EpubHtml(title="Rapport Livres", file_name="rapport.html", lang="fr")
-                section.content = _generer_contenu_html(self) # defini le contenu de la section
+                section.content = self._generer_contenu_html() # defini le contenu de la section
                 # Ajoutez la section au livre
                 book.add_item(section)
                 # Ajoutez la section au livre comme une sorte de contenu
@@ -136,9 +77,129 @@ class simple_bibli(base_bibli):
                 epub.write_epub(fichier, book, {})
 
                 print(f"Rapport généré au format {format}, nom du fichier : {fichier}")
-
         except IOError:
             raise NotImplementedError(" format non pris en charge ")
 
 
 
+
+    def _generer_contenu_html1(self):
+        book_metadata = []
+        book_paths = []
+        for i in os.listdir(self.path): # permet d'accéder aux éléments de mon repertoire
+            chemin_file = os.path.join(self.path, i)
+            book_paths.append(chemin_file)
+
+            for path in book_paths:
+                try:
+                    livre = base_livre.base_livre(chemin_file)
+                    book_metadata.append([livre.titre(), livre.auteur(), livre.type().__name__,livre.ressource[len(self.path)+1:]])
+
+
+                except Exception as e:
+                    print(f"Error processing {chemin_file}: {str(e)}")
+
+                df = pd.DataFrame(book_metadata, columns=['titre','auteur','type', 'nom du fichier'])
+        return df
+
+
+
+
+    def rapport_auteurs(self,Format, fichier):
+          try:
+            g_by = _generer_contenu_html1(self).groupby('auteur').agg({
+                        'titre': lambda x : ', '.join(x),
+                        'type': lambda x : ', '.join(x),
+                        'nom du fichier': lambda x : ', '.join(x),
+                        }).reset_index()
+
+            contenu_html = """
+                        <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Author Information</title>
+                    </head>
+                    <body>
+
+                    <h1>Author Information</h1>
+
+                    <!-- Assuming result_df is the DataFrame containing the aggregated information -->
+
+                    for index, row in g_by.iterrows()
+
+                        <h2>{{ row['auteur'] }}</h2>
+
+                        <ul>
+                            {% for book, date, title in zip(row['titre'], row['type'], row['nom du fichier']) %}
+                                <li>
+                                    <strong>Book:</strong> {{ book }}<br>
+                                    <strong>Date:</strong> {{ date }}<br>
+                                    <strong>Title:</strong> {{ title }}<br>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                    </body>
+                    </html>
+                """
+
+            if format == "PDF":
+                    HTML(string = contenu_html.write_pdf(fichier)
+                    print(f"Rapport généré au format {format}, nom du fichier : {fichier}")
+
+                elif format == "EPUB":
+                    book = epub.EpubBook() # crée l'objet  de type EPUB
+
+                    #Ajout des metadonnées à notre livre
+                    book.set_title("Rapport EPUB")
+                    book.set_language("fr")
+                    book.add_author("Rayane JAFFAL et Jennifer NGOUNA")
+
+                    # Créez une section pour le rapport
+                    section = epub.EpubHtml(title="Rapport Livres", file_name="rapport.html", lang="fr")
+                    section.content = contenu_html # defini le contenu de la section
+                    # Ajoutez la section au livre
+                    book.add_item(section)
+                    # Ajoutez la section au livre comme une sorte de contenu
+                    book.spine = [section]
+                    # Ecriture du fichier EPUB
+                    epub.write_epub(fichier, book, {})
+
+                    print(f"Rapport généré au format {format}, nom du fichier : {fichier}")
+            except IOError:
+                raise NotImplementedError(" format non pris en charge ")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def _generer_contenu_html(self):
+        # Récupération de nos livres:
+        contenu_html = "<style>.li {border-bottom: 50px}</style>"
+        contenu_html += "<h1> Etat des livres</h1>"
+        livres = []
+        for i in os.listdir(self.path): # permet d'accéder aux éléments de mon repertoire
+            chemin_file = os.path.join(self.path, i)
+            livre = base_livre.base_livre(chemin_file)
+        for livre in livres:
+            contenu_html+="<ul>"
+            contenu_html += "<li>"
+            contenu_html += f"<div><strong>{livre.titre()}</strong></div>"
+            contenu_html += f"<div> Auteur : {livre.auteur()}</div>"
+            contenu_html += f"<div> format :{livre.type().__name__}</div>"
+            contenu_html += f"<div>nom du fichier : {livre.ressource[len(self.path)+1:]}</div>"
+            contenu_html += "</li>"
+            contenu_html += "</ul>"
+            contenu_html += "<div></div>"
+        return contenu_html
