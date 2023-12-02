@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup #Python library for pulling data out of HTML
 import requests
 import os
 
