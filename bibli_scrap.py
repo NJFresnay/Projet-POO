@@ -6,30 +6,35 @@ class bibli_scrap:
     def __init__(self):
         pass
 
-    def scrap(self, url, profondeur, nbmax):
+    def scrap(url, profondeur, nbmax):
         
         if profondeur == 0 or nbmax == 0:
             return
+        
+        directory = os.path.join(os.getcwd(), "Desktop", "Bibliotheque")
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
         html_page = requests.get(url, verify=False).content
         soup = BeautifulSoup(html_page, "html.parser")
-        livres_urls = []
+        i = 0
     
-        for l in soup.find_all("a") and i in range(self.nbmax):
-            lien = l.get('href', [])
-            if lien.endswith('.pdf') or lien.endswith('.epub'):
-                try:
-                    if 'http' not in lien:
-                        lien = '{}{}'.format(site,lien) #to handle schema invalid error
-                    reponse = requests.get(lien)
-                    with open(l.title, mode="wb") as file:
-                        file.write(reponse.content)
-                    livres_urls.append(lien)
-                    self.nbmax -= 1
+        try:
+            for i, l in enumerate(soup.find_all("a")):
+                lien = l.get('href', [])
+                if lien.endswith('.pdf') or lien.endswith('.epub'):
+                    try:
+                        lien = "https://math.univ-angers.fr/~jaclin/biblio/livres/" + lien
+                        reponse = requests.get(lien)
+                        filename = os.path.join(directory, os.path.basename(lien))
+                        with open(l.title, mode="wb") as file:
+                            file.write(reponse.content)
+                        self.nbmax -= 1
                     
-                except NotImplementedError as e:
-                    print(f"Error downloading {lien}: {e}")
-
-                except Exception as e:
-                    print(f"An unexpected error occurred: {e}")
+                    except requests.exceptions.RequestException as e:
+                        print(f"Erreur du téléchargement {lien}: {e}")
+                        
+        except requests.exceptions.RequestException as e:
+            print(f"Un erreur inattendu: {e}")
 
