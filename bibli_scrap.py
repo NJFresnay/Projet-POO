@@ -12,9 +12,9 @@ class bibli_scrap:
     """
 
     def __init__(self,bibli_path):
-        self.bibli_path = bibli_path ##juste modifiez cette fonction d'une facon qu'elle hérite le path du folder de la bibliotheque de l'autre class
+        self.bibli_path = bibli_path ##(à Jennifer)juste modifiez cette fonction d'une facon qu'elle hérite le path du folder de la bibliotheque de l'autre class
         
-    def scrap(self, url, profondeur, nbmax):
+    def scrap(self, url, profondeur, nbmax): #pour le moment profondeur =1 toujours
         i = 0 #initialiser le compteur
         if profondeur == 0 or nbmax == 0: #si les arguments sont zero on sortie
             return
