@@ -60,7 +60,7 @@ class PDF(base_livre):
 
     def langue(self):
         return NotImplementedError(None) 
-    def sujet(self):
+ #selon le documentation y a pas de metadata pour le sujet    def sujet(self):
         return self.ressource.metadata.subject
 
     def date(self):
