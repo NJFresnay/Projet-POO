@@ -1,7 +1,7 @@
 #classe base_livre
 #sous classes: PDF, EPUB
 
-import io #lire URL
+import io 
 import os
 import requests
 from ebooklib import epub  #librairie pour traiter les documents de type "epub" #pip install EbookLib #EbookLib 0.18
