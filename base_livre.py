@@ -11,7 +11,7 @@ class base_livre:
     def __init__(self,ressource):
         self.ressource = ressource
         
-    def type(self): #j'ai changé ca comme tu as proposé
+    def type(self): #si le lien ou le path termine par les extentions souhaitées on excute soit la class PDF soit EPUB
         if self.ressource.endswith(".pdf"):
             return PDF
         elif self.ressource.endswith(".epub"):
@@ -20,7 +20,7 @@ class base_livre:
             raise NotImplementedError("format non pris en charge!")
 
     def titre(self):
-        return self.type()(self.ressource).titre()
+        return self.type()(self.ressource).titre() #ici, pour chaque methode "self.type()" represente soit la classe EPUB soit la classe PDF
 
     def auteur(self):
         return self.type()(self.ressource).auteur()
@@ -37,30 +37,31 @@ class base_livre:
 class PDF(base_livre):
 
     def __init__(self, ressource):
-        super().__init__(ressource)
-        if "://" in self.ressource:
-            response = requests.get(self.ressource, verify=False)
-            if response.status_code == 200:
-                self.ressource = PdfReader(io.BytesIO(response.content))
+        super().__init__(ressource) #on hérite soit la ressource de la classe base_livre
+        if "://" in self.ressource: #on voit si la ressource est un URL
+            response = requests.get(self.ressource, verify=False) #on ouvert le URL
+            if response.status_code == 200: #succès 
+                self.ressource = PdfReader(io.BytesIO(response.content)) #maitenant notre librarie pypdf peut lire le fichier (elle ne prend pas des URL by default)
             else:
-                raise FileNotFoundError("ressource inaccessible")
+                raise FileNotFoundError("ressource inaccessible") 
         else:
-            if not os.path.exists(self.ressource):
+            if not os.path.exists(self.ressource): #si ce path n'existe pas sur la machine
                 raise FileNotFoundError(f"File '{self.ressource}' does not exist.")
-            self.ressource = PdfReader(self.ressource)
+            self.ressource = PdfReader(self.ressource) #si c'est un path d'une fichier locale on peut le lire directement
     
     def type(self):
         print("PDF")
 
     def titre(self):
-        return self.ressource.metadata.title
+        return self.ressource.metadata.title  
 
     def auteur(self):
         return self.ressource.metadata.author
 
     def langue(self):
-        return NotImplementedError(None) 
- #selon le documentation y a pas de metadata pour le sujet    def sujet(self):
+        return NotImplementedError(None)  #selon le documentation y a pas de méthode metadata pour la langue 
+        
+    def sujet(self):
         return self.ressource.metadata.subject
 
     def date(self):
@@ -69,26 +70,25 @@ class PDF(base_livre):
 class EPUB(base_livre):
     
     def __init__(self,ressource):
-        super().__init__(ressource)
-        if "://" in self.ressource:
-            response = requests.get(self.ressource,verify=False)
-            # Raise an exception for bad responses and bad links
-            if response.status_code == 200:
-                self.ressource = epub.read_epub(io.BytesIO(response.content))
+        super().__init__(ressource) #on hérite soit la ressource de la classe base_livre
+        if "://" in self.ressource: #on voit si la ressource est un URL
+            response = requests.get(self.ressource,verify=False)  #on ouvert le URL
+            if response.status_code == 200: #succès 
+                self.ressource = epub.read_epub(io.BytesIO(response.content)) #maitenant notre librarie ebooklib peut lire le fichier (elle ne prend pas des URL by default)
             else:
                 raise FileNotFoundError("ressource inaccessible")
 
         # Check if the resource is a file path
         else:
-            if not os.path.exists(self.ressource):
+            if not os.path.exists(self.ressource): #si ce path n'existe pas sur la machine
                 raise FileNotFoundError(f"File '{self.ressource}' does not exist.")
-            self.ressource = epub.read_epub(self.ressource)
+            self.ressource = epub.read_epub(self.ressource) #si c'est un path d'une fichier locale on peut le lire directement
 
     def type(self):
         print("EPUB")
 
     def titre(self):
-        return self.ressource.get_metadata("DC","title")[0][0]
+        return self.ressource.get_metadata("DC","title")[0][0] 
 
     def auteur(self):
         return self.ressource.get_metadata("DC","creator")[0][0]
@@ -97,7 +97,7 @@ class EPUB(base_livre):
         return self.ressource.get_metadata("DC","language")[0][0]
     
     def sujet(self):
-        return NotImplementedError(None) #selon le documentation y a pas de metadata pour le sujet
+        return NotImplementedError(None) #selon le documentation y a pas de méthode metadata pour le sujet
 
     def date(self):
         return self.ressource.get_metadata("DC","date")[0][0]
