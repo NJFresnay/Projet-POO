@@ -12,36 +12,37 @@ class bibli_scrap:
     """
 
     def __init__(self,bibli_path):
-        self.bibli_path = bibli_path ##(à Jennifer)juste modifiez cette fonction d'une facon qu'elle hérite le path du folder de la bibliotheque de l'autre class
+        self.bibli_path = bibli_path # ok
         
-    def scrap(self, url, profondeur, nbmax): #pour le moment profondeur =1 toujours
-        i = 0 #initialiser le compteur
-        if profondeur == 0 or nbmax == 0: #si les arguments sont zero on sortie
-            return
+    def scrap(self, url, profondeur, nbmax): #pour le moment profondeur = 1, nbmax est le nombre maximal de fichiers à télécharger 
+        i = 0 #initialisation du compteur
+        if profondeur == 0 or nbmax == 0: #si les arguments sont nuls on sortie
+            return "??????"
         
-        directory = self.bibli_path #je détermine le directoire
+        #directory = self.bibli_path # on determine le répertoire de travail 
+        #ligne pas très utile à mon avis car on a toujours accès à cette donnée
         
-        if not os.path.exists(directory): #si le directoire n'existe pas on la créer
-            os.makedirs(directory)
+        if not os.path.exists(self.bibli_path): #si le répertoire n'existe pas on le crée
+            os.makedirs(dself.bibli_path)
         
         try:
             html_page = requests.get(url, verify=False).content
             soup = BeautifulSoup(html_page, "html.parser")
 
-            for l in soup.find_all("a"): #ici on cherche les lien
-                lien = l.get('href', []) #on extract les liens
+            for l in soup.find_all("a"): #ici on cherche tous les liens
+                lien = l.get('href', []) #puis on les extrait
                 if lien.endswith('.pdf') or lien.endswith('.epub'): 
                     try:
                         if 'https://' not in lien:
-                            lien = url + lien #ajouter le nom du server au lien incomplet
+                            lien = url + lien # on rajoute le nom du serveur au lien incomplet
                         reponse = requests.get(lien, verify =False)
                         
-                        filename = os.path.join(directory, os.path.basename(lien)) #nommer le fichier de chaque livre selon le nom du base du lien
+                        filename = os.path.join(self.bibli_path, os.path.basename(lien)) #nommer le fichier de chaque livre selon le nom du base du lien
                         
                         with open(filename, mode="wb") as file: #télechargement
                             file.write(reponse.content)
                         i +=1
-                        if i >= nbmax: #on a dépasser le nombre maw des fichier à télécharger
+                        if i >= nbmax:
                             break
                         
                     except requests.exceptions.RequestException as e:
