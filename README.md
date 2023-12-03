@@ -1,16 +1,19 @@
-## Bienvenue à la documentation de notre Module!   
+# Bienvenue à la documentation de notre Module!   
 
 Réalisation du projet finale de POO 
 Rayane JAFFAL et Jennifer NGOUNA   
 Prof. Jacquelin Charbonel   
-Université d'Angers   
+Université d'Angers        
 
+    
 
-# Projet-POO : Collecte de livre   
+## Projet-POO : Collecte de livre   
 
 L’objectif de ce projet est de concevoir une application pour constituer et suivre une bibliothèque de livres. L’idée est de pouvoir collecter des livres (au format _EPUB_ et _PDF_) sur le web (_web scraping_) pour constituer une bibliothèque, et générer divers catalogues de cette bibliothèque.
 
-Page d'accueil : https://github.com/NJFresnay/Projet-POO.git   
+Page d'accueil : https://github.com/NJFresnay/Projet-POO.git     
+
+   
 
 
 
@@ -18,110 +21,44 @@ Page d'accueil : https://github.com/NJFresnay/Projet-POO.git
 -----------------------------
 Ce module se compose de quatre classes: la classe `base_livre` qui englobe les sous-classes `PDF` et `EPUB`, la classe `base_bibli` avec la sous-classe `simple_bibli`, la classe `bibli`, et enfin la classe `bibli_scrap`.   
 
+    
 
 [](#_librairies_python)Librairies Python   
 ----------------------------------------
+Les librairies Python utilisées dans notre module:
+- `pypdf` qui interagit avec les fichiers de format PDF [description](https://pypi.org/project/pypdf/)
+- `EbookLib` qui interagit avec les fichiers de format EPUB [description]([https://pypi.org//pypdf/](https://pypi.org/project/EbookLib/)  
+- `requests` qui envoie des demandes HTTP [description](https://pypi.org/project/requests/)
+- `BeautifulSoup` qui scrape les informations des pages HTML [description](https://pypi.org/project/BeautifulSoup/)
 
-La classe abstraite ci-dessous modélise un livre :
-````python
-    class base_livre:
-      def __init__(self,ressource):
-        """
-            ressource désigne soit le nom de fichier (local) correspondant au livre,
-            soit une URL pointant vers un livre.
-        """
-        raise NotImplementedError("à définir dans les sous-classes")
-    
-      def type(self):
-        """ renvoie le type (EPUB, PDF, ou autre) du livre """
-        raise NotImplementedError("à définir dans les sous-classes")
-    
-      def titre(self):
-        """ renvoie le titre du livre """
-        raise NotImplementedError("à définir dans les sous-classes")
-    
-      def auteur(self):
-        """ renvoie l'auteur du livre """
-        raise NotImplementedError("à définir dans les sous-classes")
-    
-      def langue(self):
-        """ renvoie la langue du livre """
-        raise NotImplementedError("à définir dans les sous-classes")
-    
-      def sujet(self):
-        """ renvoie le sujet du livre """
-        raise NotImplementedError("à définir dans les sous-classes")
-    
-      def date(self):
-        """ renvoie la date de publication du livre """
-        raise NotImplementedError("à définir dans les sous-classes")
+
+
+
+[](#_les_méta-données)Les méta-données   
+--------------------------------------
+
+La classe `base_livre` utilise principalement les librairies `pypdf` et `EbookLib` pour récupèrer les méta-données des livres en format PDF ou EPUD. Soit à partir d'un path local, soit à partir d'un URL. D'abord, on vérifie l'extension de la ressource pour savoire le type du fichier, puis selon le type on appelle soit la sous-classe `PDF`, soit la sous-classe `EPUB`.   
+Ensuite, on vérifie le type de la ressource, parce que les librairies utilisées ne peuvent lire les fichiers qu'à partir d'un path local. Alors si la ressource est un URL on utilise la méthode `BytesIO` de la librarie `io` pour conserver le fichier dans une mémoire temporaire pour pouvoire récupérer les méta-données. 
+
+les méthodes pour récupérer les méta-données de chaque librarie:   
+```python
+#EbookLib
+#Pour les fichiers EPUB
+ressource.get_metadata("DC","title") #DC pour Dublin Core metadata: les meta-données essentielles 
+get_metadata("DC","creator")
+get_metadata("DC","language")
+get_metadata("DC","date")
+
+#pypdf
+#Pour les fichiers PDF
+metadata.title
+metadata.author
+metadata.subject
+metadata.creation_date
+
 ````
 
-Elle est destinée à servir de classe de base aux différents types de livres pouvant se trouver dans la bibilothèque (donc des livres au format EPUB et PDF dans un premier temps).
-
-La classe abstraite ci-dessous modélise la bibliothèque :
-````python
-    class base_bibli:
-      def __init__(self,path):
-        """ path désigne le répertoire contenant les livres de cette bibliothèque """
-        raise NotImplementedError("à définir dans les sous-classes")
-    
-      def ajouter(self,livre):
-        """
-          Ajoute le livre à la bibliothèque """
-        raise NotImplementedError("à définir dans les sous-classes")
-    
-      def rapport_livres(self,format,fichier):
-        """
-            Génère un état des livres de la bibliothèque.
-            Il contient la liste des livres,
-            et pour chacun d'eux
-            son titre, son auteur, son type (PDF ou EPUB), et le nom du fichier correspondant.
-    
-            format: format du rapport (PDF ou EPUB)
-            fichier: nom du fichier généré
-        """
-        raise NotImplementedError("à définir dans les sous-classes")
-    
-      def rapport_auteurs(self,format,fichier):
-        """
-            Génère un état des auteurs des livres de la bibliothèque.
-            Il contient pour chaque auteur
-            le titre de ses livres en bibliothèque et le nom du fichier correspondant au livre.
-            le type (PDF ou EPUB),
-            et le nom du fichier correspondant.
-    
-            format: format du rapport (PDF ou EPUB)
-            fichier: nom du fichier généré
-        """
-        raise NotImplementedError("à définir dans les sous-classes")
-````
-
-Elle est destinée à servir de classe de base à la classe qui implémentera réellement les traitements.
-
-[](#_étape_i)Étape I
---------------------
-
-Créer un dépot privé sur github pour le projet (1 dépot par binôme). Affecter les droits de lecture et d’écriture au binôme.
-
-Créer les sous-classes de `base_livre` utiles et nécessaires à l’application.
-
-Créer une sous-classe `simple_bibli` de `base_bibli`, et l’alimenter avec quelques livres matérialisés sous forme de fichiers situés sur la machine locale.
-
-Créer une nouvelle classe `bibli` identique à la précédente, dotée d’une méthode supplémentaire `alimenter(self,url)` à qui on fournit une URL, et qui ajoute tous les livres référencés dans la page web correspondant à l’URL \[[1](#_footnotedef_1 "View footnote.")\].
-
-Créer une nouvelle classe `bibli_scrap` dotée d’une méthode `scrap(self,url,profondeur,nbmax)`, qui réalise un web scraping destiné à alimenter la bibliothèque. Cette méthode a 3 paramètres : `url`, `profondeur` et `nbmax`. Elle récupère la page web référencée par `url`, puis télécharge tous les ressources `PDF` et `EPUB` qui y sont référencées. Ensuite, elle extrait de cette page tous les liens vers d’autres pages web, et réitère le processus précédent sur chacune d’elles. Le processus se réitère jusqu’à ce que l’un des critères d’arrêt soit vérifié.
-
-`url` est l’URL de départ du scraping. `profondeur` est le nombre maximal de sites à parcourir. `nbmax` est le nombre maximal de documents à télécharger.
-
-Implémentez ces classes en optimisant la clarté, la réutilisabilité et la maintenabilité. A la fin de cette partie, vous devez disposer de toutes les briques nécessaires au développement de l’application.
-
-Rédiger une petite documentation (maximum 3 pages au format PDF ou EPUB) à destination des développeurs qui souhaiteraient utiliser ces classes (manuel technique).
-
-Avant le 4/12/2023, chacun des 2 binômes dépose les codes sources et la documentatin sur son espace Moodle.
-
-Le 4/12/2023, le binôme rend public son dépot sur github, de telle sorte que toute la promo puisse étudier son code.
-
+   
 [](#_étape_ii)Étape II
 ----------------------
 
