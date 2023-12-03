@@ -27,7 +27,7 @@ Ce module se compose de quatre classes: la classe `base_livre` qui englobe les s
 ----------------------------------------
 Les librairies Python utilisées dans notre module:
 - `pypdf` qui interagit avec les fichiers de format PDF [description](https://pypi.org/project/pypdf/)
-- `EbookLib` qui interagit avec les fichiers de format EPUB [description]([https://pypi.org//pypdf/](https://pypi.org/project/EbookLib/)  
+- `EbookLib` qui interagit avec les fichiers de format EPUB [description](https://pypi.org/project/EbookLib/)  
 - `requests` qui envoie des demandes HTTP [description](https://pypi.org/project/requests/)
 - `BeautifulSoup` qui scrape les informations des pages HTML [description](https://pypi.org/project/BeautifulSoup/)
 
@@ -44,17 +44,21 @@ les méthodes pour récupérer les méta-données de chaque librarie:
 ```python
 #EbookLib
 #Pour les fichiers EPUB
-ressource.get_metadata("DC","title") #DC pour Dublin Core metadata: les meta-données essentielles 
-get_metadata("DC","creator")
-get_metadata("DC","language")
-get_metadata("DC","date")
+f = epub.read_epub(ressource)
+
+f.get_metadata("DC","title") #DC pour Dublin Core metadata: les meta-données essentielles 
+f.get_metadata("DC","creator")
+f.get_metadata("DC","language")
+f.get_metadata("DC","date")
 
 #pypdf
 #Pour les fichiers PDF
-metadata.title
-metadata.author
-metadata.subject
-metadata.creation_date
+
+f = PdfReader(ressource)
+f.metadata.title
+f.metadata.author
+f.metadata.subject
+f.metadata.creation_date
 
 ````
 
