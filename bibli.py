@@ -2,7 +2,7 @@ from base_bibli import base_bibli
 import os
   
 
-# La classe bibli sert à alimenter notre bibliothèque à l'aide du web scraping.
+# La classe bibli sert à alimenter notre bibliothèque à l'aide du web scraping. 
 # Pour se faire, elle hérite des méthodes de "base_bibli" pour la génération des rapports
 # et de "bibli_scrap" pour récupérer les documents depuis l'url directement 
 
