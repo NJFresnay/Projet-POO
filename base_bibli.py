@@ -39,7 +39,23 @@ class base_bibli:
         return self.genere_rapport(format, fichier,html_content)
              
     def rapport_auteurs(self, format, fichier):
-        df = self.donnees()
+        try:
+            file_data_list = []
+            for file_name in os.listdir(self.path): # pour parcourir les éléments du répertoire 
+                file_path = os.path.join(self.path, file_name)#concatène le chemin du répertoire a celui de l'element pour déterminer le chemin du livre
+                book = base_livre(file_path)
+                
+                file_data= {
+                    'titre': book.titre(),
+                    'auteur': book.auteur(),
+                    'type': book.type().__name__,
+                    'nom du fichier': book.ressource[len(self.path)+1:-4]
+                }
+                file_data_list.append(file_data)
+            df = pd.DataFrame(file_data_list, columns=['titre','auteur','type','nom du fichier'])
+            return df    
+        except:
+            print(" Données non accessibles!")
         # Construire le contenu HTML du rapport
         grouped_df = df.groupby('auteur').agg({
                     'titre': lambda x: ', '.join(x),
@@ -77,7 +93,7 @@ class base_bibli:
                     """
         return self.genere_rapport(format, fichier, html_content)
           
-
+"""
     def donnees(self):
         try:
             file_data_list = []
@@ -96,6 +112,7 @@ class base_bibli:
             return df    
         except:
             print(" Données non accessibles!")
+                """
             
             
     def genere_rapport(self,format,fichier,html_content):
