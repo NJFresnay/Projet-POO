@@ -3,6 +3,7 @@ import shutil
 import os
 import pandas as pd
 from ebooklib import epub
+import pdfkit
 from weasyprint import HTML
 
 
@@ -18,8 +19,14 @@ class base_bibli:
     def ajouter(self,livre): 
         """Ajoute le livre à la bibliothèque """
         if livre.endswith(".pdf") or livre.endswith(".epub"):
-            shutil.copy(livre, self.path)# on copie le livre directement dans la bibliothèque depuis sa source
-        raise NotImplementedError(" format non pris en charge ")
+            destination_path = os.path.join(self.path, os.path.basename(livre))
+
+            # on copie le livre dans la bibliothèque
+            shutil.copy(livre, destination_path)
+            print(f" {livre} a été ajouté à la bibliothèque.")
+        else:
+            print(f"Format non pris en charge pour le livre {livre}.")
+
                    
     def rapport_livres(self, format, fichier):
         # Contenu HTML du rapport
@@ -71,7 +78,7 @@ class base_bibli:
             for titre, type, nom_fichier in zip(row['titre'], row['type'], row['nom du fichier']):
                 html_content += f"""
                     <li>
-                        Titre : {titre} 
+                        <p>Titre : {titre} </p>
                     </li>
                 """
 
@@ -106,7 +113,6 @@ class base_bibli:
             
     def genere_rapport(self,format,fichier,html_content):
         try:
-                ## ATTENTION la génération de rapport au format PDF n'est pas optimal, à ne pas utiliser pour le moment
             if format == "PDF":
                 #on transforme le texte html directement en fichier pdf
                 HTML(string=html_content).write_pdf(fichier)
@@ -127,7 +133,4 @@ class base_bibli:
                 return f"Rapport généré au format {format}, nom du fichier : {fichier}"
         except:
             raise NotImplementedError(" format non pris en charge ")
-            
-            
-   
             
