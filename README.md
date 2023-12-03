@@ -30,6 +30,7 @@ Les principales librairies Python utilisées dans notre module:
 - `BeautifulSoup` qui scrape les informations des pages HTML [description](https://pypi.org/project/BeautifulSoup/)
 - `weasyprint` qui aide à créer des documents PDF en transformant de simples pages HTML en superbes rapports [description](https://pypi.org/project/weasyprint/)
 - `shutil` est une bibliothèque standard qui offre un ensemble de fonctions haut niveau pour effectuer des opérations de manipulation de fichiers et de répertoires. Elle est particulièrement utile pour effectuer des opérations courantes telles que la copie, le déplacement, la suppression et l'archivage de fichiers et de répertoires.
+- `pandas` qui fournit des structures de données rapides et flexible: DataFrame [description](https://pypi.org/project/pandas/)
 
 
 [](#_les_méta-données)Les Méta-données   
