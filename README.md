@@ -75,7 +75,7 @@ livre.date()
 ````
 
    
-[](#_la_bibliothèque)La Bibliothèque   
+[](#_la_bibliothèque)La base de la bibliothèque   
 ------------------------------------
 La classe `base_bibli` qui prend en paramètre un `path`(lien vers la bibliothèque) permet de stocker et référencier tous les livres présents dans notre bibliothèque(dans un répertoire sur notre machine). 
 Elle est dotée de cinq méthodes:
