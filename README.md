@@ -6,7 +6,6 @@ Prof. Jacquelin Charbonel
 Université d'Angers
 
 # Projet-POO : Collecte de livre   
-================================   
 
 L’objectif de ce projet est de concevoir une application pour constituer et suivre une bibliothèque de livres. L’idée est de pouvoir collecter des livres (au format _EPUB_ et _PDF_) sur le web (_web scraping_) pour constituer une bibliothèque, et générer divers catalogues de cette bibliothèque.
 
