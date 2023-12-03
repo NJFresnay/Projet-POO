@@ -14,7 +14,7 @@ class base_bibli:
         """ path désigne le répertoire contenant les livres de cette bibliothèque """
         self.path = path
 
-    def ajouter(self,livre): 
+    def ajouter(self,livre): ##rayane: peux tu essayer cette méthode?
         """Ajoute le livre à la bibliothèque """
         if livre.endswith(".pdf") or livre.endswith(".epub"):
             shutil.copy(livre, self.path)# on copie le livre directement dans la bibliothèque depuis sa source
@@ -92,13 +92,7 @@ class base_bibli:
             if format == "PDF":
                 #on transforme le texte html directement en fichier pdf
                 import pdfkit
-                #rayane: cette librairie besoin de cette tool wkhtmltopdf pour quell marche je vais essayer
-                pdfkit_options = {
-                    'wkhtmltopdf': '/path/to/wkhtmltopdf',  # Set the correct path
-                }
-                
-                pdfkit.from_string(html_content, fichier, options=pdfkit_options)
-
+                #rayane: cette librairie besoin d'une tool wkhtmltopdf mais c'est compliqué je vais essyer une autre
                 pdfkit.from_string(html_content, fichier)
                 return f"Rapport généré au format {format}, nom du fichier : {fichier}"
 
