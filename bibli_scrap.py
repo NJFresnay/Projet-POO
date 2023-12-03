@@ -8,9 +8,8 @@ class bibli_scrap(base_bibli):
         super().__init__(path) #hérite le lien du répertoire où télecharger les livres de la classe base_bibli 
         
     def scrap(self, url, profondeur, nbmax):
-        
-        if profondeur == 0 or nbmax == 0: #si les arguments sont zero on sort
-            return #ça return None 
+        if profondeur == 0 or nbmax == 0: #si les arguments sont nuls on sort
+            return None 
         
         directory = self.path #je détermine le répertoire 
         
@@ -43,10 +42,10 @@ class bibli_scrap(base_bibli):
             for l in soup.find_all("a"): #ici on cherche les liens pour passer à des autres pages web
                     next_lien = l.get('href',[]) #on extract les liens
                     if next_lien.endswith('.pdf') or next_lien.endswith('.epub'): 
-                        continue #on cherche pas des liens des livres ici
+                        continue   #on continue car on cherche pas des liens des livres ici
                     try:
                         if 'https://' not in next_lien:
-                            next_lien = url + next_lien #ajouter le nom du server au lien incomplet
+                            next_lien = url + next_lien  #ajouter le nom du server au lien incomplet
                         if nbmax > 0 and profondeur > 1: #j'ai mis 1 pour le prof. car déja le code fait le scraping dans un site
                             self.scrap(next_lien, profondeur, nbmax) #recursion
                             profondeur -= 1
