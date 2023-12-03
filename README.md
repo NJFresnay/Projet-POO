@@ -25,7 +25,7 @@ Ce module se compose de quatre classes: la classe `base_livre` qui englobe les s
 
 [](#_librairies_python)Librairies Python   
 ----------------------------------------
-Les librairies Python utilisées dans notre module:
+Les principales librairies Python utilisées dans notre module:
 - `pypdf` qui interagit avec les fichiers de format PDF [description](https://pypi.org/project/pypdf/)
 - `EbookLib` qui interagit avec les fichiers de format EPUB [description](https://pypi.org/project/EbookLib/)  
 - `requests` qui envoie des demandes HTTP [description](https://pypi.org/project/requests/)
@@ -34,11 +34,11 @@ Les librairies Python utilisées dans notre module:
 
 
 
-[](#_les_méta-données)Les méta-données   
+[](#_les_méta-données)Les Méta-données   
 --------------------------------------
 
-La classe `base_livre` utilise principalement les librairies `pypdf` et `EbookLib` pour récupèrer les méta-données des livres en format PDF ou EPUD. Soit à partir d'un path local, soit à partir d'un URL. D'abord, on vérifie l'extension de la ressource pour savoire le type du fichier, puis selon le type on appelle soit la sous-classe `PDF`, soit la sous-classe `EPUB`.   
-Ensuite, on vérifie le type de la ressource, parce que les librairies utilisées ne peuvent lire les fichiers qu'à partir d'un path local. Alors si la ressource est un URL on utilise la méthode `BytesIO` de la librarie `io` pour conserver le fichier dans une mémoire temporaire pour pouvoire récupérer les méta-données. 
+La classe `base_livre` utilise principalement les librairies `pypdf` et `EbookLib` pour extraire les méta-données des livres au format PDF ou EPUD. Cela peut être effectué à partir d'un chemin local ou d'une URL. Tout d'abord, l'extension de la ressource est vérifiée pour déterminer le type de fichier, puis en fonction de ce type, la sous-classe appropriée, soit `PDF`, soit `EPUB`, est appelée.   
+Ensuite, la nature de la ressource est examinée, car les librairies utilisées ne peuvent lire les fichiers que depuis un chemin local. Ainsi, si la ressource est une URL, la méthode `BytesIO` de la librarie `io` est utilisée pour stocker le fichier dans une mémoire temporaire, permettant ainsi l'extraction des méta-données. 
 
 les méthodes pour récupérer les méta-données de chaque librarie:   
 ```python
