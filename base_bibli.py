@@ -39,6 +39,7 @@ class base_bibli:
         return self.genere_rapport(format, fichier,html_content)
              
     def rapport_auteurs(self, format, fichier):
+        df = self.donnees()
         # Construire le contenu HTML du rapport
         grouped_df = df.groupby('auteur').agg({
                     'titre': lambda x: ', '.join(x),
