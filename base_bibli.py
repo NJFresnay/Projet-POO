@@ -36,7 +36,7 @@ class base_bibli:
                             </body>
                         </html>
                     """
-        return self.genere_rapport(format, fichier)
+        return self.genere_rapport(format, fichier,html_content)
              
     def rapport_auteurs(self, format, fichier):
         # Construire le contenu HTML du rapport_auteurs
@@ -63,7 +63,7 @@ class base_bibli:
                             </body>
                         </html>
                     """
-        return self.genere_rapport(format, fichier)
+        return self.genere_rapport(format, fichier, html_content)
                
     
 
