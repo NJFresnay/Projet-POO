@@ -5,14 +5,14 @@ import os
 class bibli_scrap(base_bibli):
 
     def __init__(self,path):
-        super().__init__(path) 
+        super().__init__(path) #hérite le lien du répertoire où télecharger les livres de la classe base_bibli 
         
     def scrap(self, url, profondeur, nbmax):
         i = 0 #initialiser le compteur
         if profondeur == 0 or nbmax == 0: #si les arguments sont zero on sort
             return #ça return None 
         
-        directory = self.bibli_path #je détermine le répertoire 
+        directory = self.path #je détermine le répertoire 
         
         if not os.path.exists(directory): #si le répertoire n'existe pas on le crée
             os.makedirs(directory)
