@@ -1,6 +1,6 @@
 from base_bibli import base_bibli
 import os
-from bibli_scrap import bibli_scrap  
+  
 
 # La classe bibli sert à alimenter notre bibliothèque à l'aide du web scraping.
 # Pour se faire, elle hérite des méthodes de "base_bibli" pour la génération des rapports
@@ -12,6 +12,7 @@ class bibli(base_bibli):
         """ Vous devez lui passer en arguments le chemin vers le répertoire
             qui vous servira de bibliothèque"""
         super().__init__(path)
+        from bibli_scrap import bibli_scrap
         self.scrap_instance = bibli_scrap(path)
 
     def alimenter(self, url, nbmax):
