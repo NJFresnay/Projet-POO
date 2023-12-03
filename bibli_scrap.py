@@ -47,8 +47,9 @@ class bibli_scrap(base_bibli):
                     try:
                         if 'https://' not in next_lien:
                             next_lien = url + next_lien #ajouter le nom du server au lien incomplet
-                        if nbmax > 0: 
-                            self.scrap(next_lien, profondeur - 1, nbmax) #recursion
+                        if nbmax > 0 and profondeur > 0: 
+                            self.scrap(next_lien, profondeur, nbmax) #recursion
+                            profondeur -= 1
                         
                     except requests.exceptions.RequestException as e:
                         print(f"Erreur traitement {next_lien}: {e}")
