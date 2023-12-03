@@ -106,12 +106,12 @@ ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.pdf")
 
 [](#_bibli)La Bibliothèque   
 -----------------------------    
-La classe `bibli` est la classe complète qui définit notre bibliothèque. Elle prend en argument `path` (lien vers la bibliothèque). Cette dernière hérite non seulement de `base_bibli` mais aussi de `bibli_scrap`. Elle est donc capable de faire appel à la méthode `ajouter()` (de `base_bibli`) si le livre est déja présent dans notre machine locale ou `scrap()` (de `bibli_scrap`) si `path` est une `url` afin d'ajouter des livres à notre bibliothèque.
+La classe `bibli` est la classe complète qui définit notre bibliothèque. Elle prend en argument `path` (lien vers la bibliothèque). Elle hérite de la `base_bibli`, elle est donc capable de faire appel à la méthode `ajouter()` (de `base_bibli`) si le livre est déja présent dans notre machine locale. De plus elle est capable d'appeler la méthode `scrap()` (de `bibli_scrap`) si `path` est une `url` afin d'ajouter des livres à notre bibliothèque.
 
 Exemple d'utilisation de cette classe:
 
 ````python
-path = bibli_scrap(r"C:\Users\jaffa\OneDrive\Desktop\Bibliotheque") #la bibliothèque où sauvegarder les fichiers
+path = r"C:\Users\jaffa\OneDrive\Desktop\Bibliotheque" #la bibliothèque où sauvegarder les fichiers
 
 ma_bibliotheque = bibli_scrap(path)
 
