@@ -47,9 +47,6 @@ class PDF(base_livre):
             if not os.path.exists(self.ressource): #si ce path n'existe pas sur la machine
                 raise FileNotFoundError(f"File '{self.ressource}' does not exist.")
             self.ressource = PdfReader(self.ressource) #si c'est un path d'une fichier locale on peut le lire directement
-    
-    def type(self):
-        print("PDF")
 
     def titre(self):
         return self.ressource.metadata.title  
@@ -82,9 +79,6 @@ class EPUB(base_livre):
             if not os.path.exists(self.ressource): #si ce path n'existe pas sur la machine
                 raise FileNotFoundError(f"File '{self.ressource}' does not exist.")
             self.ressource = epub.read_epub(self.ressource) #si c'est un path d'une fichier locale on peut le lire directement
-
-    def type(self):
-        print("EPUB")
 
     def titre(self):
         return self.ressource.get_metadata("DC","title")[0][0] 
