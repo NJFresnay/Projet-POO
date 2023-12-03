@@ -90,11 +90,22 @@ class base_bibli:
     def genere_rapport(self,format,fichier,html_content):
         try:
             if format == "PDF":
+                # je vais essayer ce code
+                from xhtml2pdf import pisa
+                import io
+                
+                def convert_html_to_pdf(html_content, fichier):
+                    with open(fichier, "wb") as output_file:
+                        pdf_status = pisa.CreatePDF(html_content, dest=output_file)
+                
+                    return not pdf_status.err
+                """
                 #on transforme le texte html directement en fichier pdf
                 import pdfkit
                 #rayane: cette librairie besoin d'une tool wkhtmltopdf mais c'est compliqué je vais essyer une autre
                 pdfkit.from_string(html_content, fichier)
                 return f"Rapport généré au format {format}, nom du fichier : {fichier}"
+                """
 
             elif format == "EPUB":
                 book = epub.EpubBook() # crée l'objet  de type EPUB
