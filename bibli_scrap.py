@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup #Python library for pulling data out of HTML
 import requests
 import os
+import base_bibli
 
 class bibli_scrap(base_bibli):
 
