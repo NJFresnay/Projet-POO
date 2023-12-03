@@ -67,12 +67,12 @@ Exemple d'utilisation de cette classe:
 
 ````python
 livre = base_livre("path or URL")
-print("Type:",livre.type())
-print("Titre:",livre.titre())
-print("Auteur:",livre.auteur())
-print("Langue:",livre.langue())
-print("Sujet:",livre.sujet())
-print("Date:",livre.date())
+print("Type:", livre.type())
+print("Titre:", livre.titre())
+print("Auteur:", livre.auteur())
+print("Langue:", livre.langue())
+print("Sujet:", livre.sujet())
+print("Date:", livre.date())
 ````
 
    
