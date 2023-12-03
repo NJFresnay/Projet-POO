@@ -1,14 +1,13 @@
-import base_livre
+from base_livre import *
 import shutil
 import os
 import pandas as pd
 from ebooklib import epub
 import pdfkit
-from IPython.core.display import HTML
-
 
 """"  Afin de créer une instance de la classe base_bibli il faudra lui passer en argument le chemin vers 
         le répertoire qui vous servira de bibliothèque"""
+
 
 class base_bibli:
     def __init__(self,path):
@@ -17,37 +16,70 @@ class base_bibli:
 
     def ajouter(self,livre): 
         """Ajoute le livre à la bibliothèque """
-        try:
-            if os.path.exists(livre):
-                return "Le fichier existe déja dans le répertoire"
-            elif not os.path.exists(livre):
-                shutil.copy(livre, self.path)# on copie le livre directement dans la bibliothèque depuis sa source
-        except:
-            raise NotImplementedError(" format non pris en charge ")
+        if livre.endswith(".pdf") or livre.endswith(".epub"):
+            shutil.copy(livre, self.path)# on copie le livre directement dans la bibliothèque depuis sa source
+        raise NotImplementedError(" format non pris en charge ")
+                   
+            
+    def rapport_livres(self, format,fichier):
+        return self.genere_rapport(format, fichier)
+          
         
+    def rapport_auteurs(self, format, fichier):
+        # Construire le contenu HTML du rapport
+        auteurs_info = self.donnees().groupby('auteur')
         
-    def _donnees_bibliotheque(self):
-        try:
-            book_metadata = []
-            book_paths = []
-            for file in os.listdir(self.path): # pour parcourir les éléments du répertoire 
-                file_path = os.path.join(self.path, file)#concatène le chemin du répertoire a celui de l'element pour déterminer le chemin du livre
-                book_paths.append(file_path)
-            for path in book_paths:
-                livre = base_livre(path)
-                book_metadata.append(livre)
-            df = pd.DataFrame(book_metadata, columns=['titre','auteur','type', 'nom'])          
-            return df
-        except:
-            raise NotImplementedError (f" Error processing {path}")      
+        html_content = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Rapport des Auteurs</title>
+            </head>
+            <body>
+                <h1>État des les livres classés par auteurs</h1>
+            """
         
+        for auteur, livres in auteurs_info.items():
+            html_content += f"<h2>{auteur}</h2>"
+            html_content += "<ul>"
+            for livre in livres:
+                html_content += f"<li>{livre['titre']} - {livre['type']} - {livre['nom du fichier']}</li>"
+            html_content += "</ul>"
 
-    def _genere_rapport(self,html_content,format,fichier):
+        html_content += """
+                            </body>
+                        </html>
+                    """
+        return self.genere_rapport(format, fichier)
+               
+    
+
+    def donnees(self):
+        try:
+            file_data_list = []
+            for file_name in os.listdir(self.path): # pour parcourir les éléments du répertoire 
+                file_path = os.path.join(self.path, file_name)#concatène le chemin du répertoire a celui de l'element pour déterminer le chemin du livre
+                book = base_livre(file_path)
+                
+                file_data= {
+                    'titre': book.titre(),
+                    'auteur': book.auteur(),
+                    'type': book.type().__name__,
+                    'nom du fichier': book.ressource[len(self.path)+1:-4]
+                }
+                file_data_list.append(file_data)
+            df = pd.DataFrame(file_data_list, columns=['titre','auteur','type','nom du fichier'])
+            return df    
+        except:
+            print(" Données non accessibles!")
+            
+            
+    def genere_rapport(self,format,fichier,html_content):
         try:
             if format == "PDF":
                 #on transforme le texte html directement en fichier pdf
-                pdfkit.from_string(html_content, fichier)
-                print(f"Rapport généré au format {format}, nom du fichier : {fichier}")
+                pdfkit.from_string(html_content, ficher)
+                return f"Rapport généré au format {format}, nom du fichier : {fichier}"
 
             elif format == "EPUB":
                 book = epub.EpubBook() # crée l'objet  de type EPUB
@@ -60,27 +92,10 @@ class base_bibli:
                 book.spine = [section]
                 #on ajoute nos diférentes sections au fichier EPUB
                 epub.write_epub(fichier, book, {})
-                print(f"Rapport généré au format {format}, nom du fichier : {fichier}")
+                return f"Rapport généré au format {format}, nom du fichier : {fichier}"
         except:
             raise NotImplementedError(" format non pris en charge ")
-
-
-    def rapport_livres(self, format, fichier):
-        html_content = HTML(contenu_html)
-        return self._genere_rapport_livres(html_content)
-
-    def rapport_auteurs(self,format, fichier):
-        #le df_authors est le dataframe des auteurs et de tous leurs livres présents dans la bibilothèque
-        res = self._donnees_bibliotheque()
-        #html_table est notre dataframe de données transformer en fichier html
-        #contenu =f" <!DOCTYPE html> <html lang=\"fr\"><head><meta charset=\"UTF-8\"> "
-        contenu = res.to_html()
-    
-        html_content = HTML(contenu)
-        return self._genere_rapport(html_content,format,fichier)
-
-
-class simple_bibli(base_bibli):
-
-    def __init__(self,path):
-        super().__init__(path)
+            
+            
+   
+            
