@@ -9,16 +9,11 @@ Université d'Angers
 
 L’objectif de ce projet est de concevoir une application pour constituer et suivre une bibliothèque de livres. L’idée est de pouvoir collecter des livres (au format _EPUB_ et _PDF_) sur le web (_web scraping_) pour constituer une bibliothèque, et générer divers catalogues de cette bibliothèque.
 
-Page d'accueil : 
+Page d'accueil : https://github.com/NJFresnay/Projet-POO.git
 
-[](#_modalités)Modalités
-------------------------
+[](#introduction)Introduction  
+-----------------------------
 
-Le projet est à réaliser en binôme. Il se compose de 3 étapes bien définies dans le temps. La première consiste à concevoir une bibliothèque de classes. La deuxième consiste à évaluer le code réalisé et à le comparer au code réalisé par les autres binômes. La troisième consiste à créer une application en utilisant la bibliothèque précédente.
-
-Chaque binôme peut utiliser la bibliothèque d’un autre binôme pour réaliser son application.
-
-Respecter scrupuleusement les dates, il ne pourra pas y avoir de prolongation.
 
 [](#_pré_requis)Pré-requis
 --------------------------
