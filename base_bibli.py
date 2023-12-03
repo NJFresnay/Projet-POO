@@ -91,14 +91,7 @@ class base_bibli:
         try:
             if format == "PDF":
                 # je vais essayer ce code
-                from xhtml2pdf import pisa
-                import io
-                
-                def convert_html_to_pdf(html_content, fichier):
-                    with open(fichier, "wb") as output_file:
-                        pdf_status = pisa.CreatePDF(html_content, dest=output_file)
-                
-                    return not pdf_status.err
+                # alors ça xhtml2pdf ne marche pas je vais chercher autre 
                 """
                 #on transforme le texte html directement en fichier pdf
                 import pdfkit
