@@ -56,7 +56,7 @@ class base_bibli:
                 <h1>État des livres classés par auteurs</h1>
             """
         
-        for index, row in agrouped_df.iterrows():
+        for index, row in grouped_df.iterrows():
 
                 html_content += "<h4> {row['auteur']}</h4>"
                 html_content += "<ul>"
