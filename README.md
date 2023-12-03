@@ -114,5 +114,6 @@ path.scrap("https://math.univ-angers.fr/~jaclin/biblio/livres/", 1, 2) #récupé
 Ensuite, cette classe explore la même page à la recherche des liens qui ne renvoient pas vers des livres, puis elle applique la méthode `scrap` sur ces lien de manière récursive jusqu'à ce que la profendeur souhaitée est atteinte.   
 
 
---------------------------------------------------------------  
-test possible avec l’URL [biblio](https://math.univ-angers.fr/~jaclin/biblio/livres/)
+--------------------------------------------------------------    
+
+Test possible des classes avec l’URL [bibliothèque](https://math.univ-angers.fr/~jaclin/biblio/livres/)
