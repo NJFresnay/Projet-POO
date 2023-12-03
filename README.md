@@ -38,7 +38,7 @@ Les principales librairies Python utilisées dans notre module:
 
 La classe `base_livre` utilise principalement les librairies `pypdf` et `EbookLib` pour extraire les méta-données des livres au format PDF ou EPUD. Cela peut être effectué à partir d'un chemin local ou d'une URL. Tout d'abord, l'extension de la ressource est vérifiée pour déterminer le type de fichier, puis en fonction de ce type, la sous-classe appropriée, soit `PDF`, soit `EPUB`, est appelée.   
 
-Ensuite, la nature de la ressource est examinée, car les librairies utilisées ne peuvent lire les fichiers que depuis un chemin local. Ainsi, si la ressource est une URL, la méthode `BytesIO` de la librarie `io` est utilisée pour stocker le fichier dans une mémoire temporaire, permettant ainsi l'extraction des méta-données. 
+Ensuite, la nature de la ressource est examinée, car les librairies utilisées ne peuvent lire les fichiers que depuis un chemin local. Ainsi, si la ressource est une URL, la librarie `tempfile` est utilisée pour ouvrir et stocker le livre dans une fichier temporaire, permettant ainsi l'extraction des méta-données. 
 
 les méthodes pour récupérer les méta-données de chaque librarie:   
 ```python
