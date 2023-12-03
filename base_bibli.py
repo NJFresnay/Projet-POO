@@ -4,6 +4,8 @@ import os
 import pandas as pd
 from ebooklib import epub
 import pdfkit
+from weasyprint import HTML
+
 
 """"  Afin de créer une instance de la classe base_bibli il faudra lui passer en argument le chemin vers 
         le répertoire qui vous servira de bibliothèque"""
@@ -14,55 +16,46 @@ class base_bibli:
         """ path désigne le répertoire contenant les livres de cette bibliothèque """
         self.path = path
 
-    def ajouter(self,livre): ##rayane: peux tu essayer cette méthode?
+    def ajouter(self,livre): 
         """Ajoute le livre à la bibliothèque """
         if livre.endswith(".pdf") or livre.endswith(".epub"):
             shutil.copy(livre, self.path)# on copie le livre directement dans la bibliothèque depuis sa source
         raise NotImplementedError(" format non pris en charge ")
+                   
+    def rapport_livres(self, format, fichier):
+        # Contenu HTML du rapport
+        df = self.donnees()
+    
+        # Convertir le DataFrame en une table HTML
+        html_table = df.to_html(index=False)
 
-    def rapport_livres(self, format,fichier): #rayane: marche seulement avec les epub
-        #contenu html du rapport_livres
-        html_content = """
+        # Générer le contenu HTML complet
+        html_content = f"""
             <!DOCTYPE html>
             <html>
             <head>
                 <title>Rapport des livres</title>
             </head>
             <body>
-                <h1>État des les livres</h1>
-            """
-        html_content += "<div> self.donnees().to_html() </div>"  #ici on recupère notre dataframe
-        html_content += """
-                            </body>
-                        </html>
-                    """
-        return self.genere_rapport(format, fichier,html_content)
-             
-    def rapport_auteurs(self, format, fichier):
-        try:
-            file_data_list = []
-            for file_name in os.listdir(self.path): # pour parcourir les éléments du répertoire 
-                file_path = os.path.join(self.path, file_name)#concatène le chemin du répertoire a celui de l'element pour déterminer le chemin du livre
-                book = base_livre(file_path)
-                
-                file_data= {
-                    'titre': book.titre(),
-                    'auteur': book.auteur(),
-                    'type': book.type().__name__,
-                    'nom du fichier': book.ressource[len(self.path)+1:-4]
-                }
-                file_data_list.append(file_data)
-            df = pd.DataFrame(file_data_list, columns=['titre','auteur','type','nom du fichier'])
-            return df    
-        except:
-            print(" Données non accessibles!")
-        # Construire le contenu HTML du rapport
-        grouped_df = df.groupby('auteur').agg({
-                    'titre': lambda x: ', '.join(x),
-                    'type': 'count',  # compter le nombre de livres par auteur
-                    'nom du fichier': lambda x: ', '.join(x)
-                }).reset_index()
+                <h1>État des livres</h1>
+                {html_table}
+            </body>
+            </html>
+        """
+
+        # Générer le rapport au format spécifié
+        return self.genere_rapport(format, fichier, html_content)
         
+    
+        
+    def rapport_auteurs(self, format, fichier):
+        # Construire le contenu HTML du rapport
+        grouped_df = self.donnees().groupby('auteur').agg({
+                'titre': lambda x: ', '.join(x),
+                'type': lambda x: ', '.join(x),
+                'nom du fichier': lambda x: ', '.join(x)
+                }).reset_index()
+
         html_content = """
             <!DOCTYPE html>
             <html>
@@ -71,29 +64,27 @@ class base_bibli:
             </head>
             <body>
                 <h1>État des livres classés par auteurs</h1>
-            """
-        
-        for index, row in grouped_df.iterrows():
+        """
 
-                html_content += "<h4> {row['auteur']}</h4>"
-                html_content += "<ul>"
-        
-                for t,f,n in zip(row['titre'], row['type'], row['nom du fichier']):
-                
-                        html_content += """
-                            <li>
-                                Titre : {t}
-                                Format: {f}
-                                nom du fichier :{{n}}<br>
-                            </li>"""
-                        html_content += "</ul>"
+        for index, row in grouped_df.iterrows():
+            html_content += f"<h4>{row['auteur']}</h4>"
+            html_content += "<ul>"
+            for titre, type, nom_fichier in zip(row['titre'], row['type'], row['nom du fichier']):
+                html_content += f"""
+                    <li>
+                        Titre : {titre} 
+                    </li>
+                """
+
+            html_content += "</ul>"
+
         html_content += """
-                            </body>
-                        </html>
-                    """
+                </body>
+            </html>
+        """
         return self.genere_rapport(format, fichier, html_content)
-          
-"""
+
+
     def donnees(self):
         try:
             file_data_list = []
@@ -112,14 +103,15 @@ class base_bibli:
             return df    
         except:
             print(" Données non accessibles!")
-"""
             
             
-def genere_rapport(self,format,fichier,html_content):
+    def genere_rapport(self,format,fichier,html_content):
         try:
+                ## ATTENTION la génération de rapport au format PDF n'est pas optimal, à ne pas utiliser pour le moment
             if format == "PDF":
                 #on transforme le texte html directement en fichier pdf
-                pdfkit.from_string(html_content, fichier)
+                HTML(string=html_content).write_pdf(fichier)
+                
                 return f"Rapport généré au format {format}, nom du fichier : {fichier}"
 
             elif format == "EPUB":
@@ -136,6 +128,7 @@ def genere_rapport(self,format,fichier,html_content):
                 return f"Rapport généré au format {format}, nom du fichier : {fichier}"
         except:
             raise NotImplementedError(" format non pris en charge ")
-    
+            
+            
    
             
