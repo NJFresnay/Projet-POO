@@ -19,14 +19,27 @@ class base_bibli:
         if livre.endswith(".pdf") or livre.endswith(".epub"):
             shutil.copy(livre, self.path)# on copie le livre directement dans la bibliothèque depuis sa source
         raise NotImplementedError(" format non pris en charge ")
-                   
-            
+
     def rapport_livres(self, format,fichier):
+        #contenu html du rapport_livres
+        html_content = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Rapport des livres</title>
+            </head>
+            <body>
+                <h1>État des les livres</h1>
+            """
+        html_content += "<div> self.donnees().to_html() </div>"  #ici on recupère notre dataframe
+        html_content += """
+                            </body>
+                        </html>
+                    """
         return self.genere_rapport(format, fichier)
-          
-        
+             
     def rapport_auteurs(self, format, fichier):
-        # Construire le contenu HTML du rapport
+        # Construire le contenu HTML du rapport_auteurs
         auteurs_info = self.donnees().groupby('auteur')
         
         html_content = """
@@ -83,6 +96,8 @@ class base_bibli:
 
             elif format == "EPUB":
                 book = epub.EpubBook() # crée l'objet  de type EPUB
+                #On ajoute un titre
+                book.set_title("rapport de livres")
                 # on crée une section pour le rapport
                 section = epub.EpubHtml(title="Rapport Livres", file_name="rapport.html", lang="fr")
                 section.content = html_content #  on defini le contenu de la section
