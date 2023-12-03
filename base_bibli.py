@@ -44,7 +44,7 @@ class base_bibli:
                     'titre': lambda x: ', '.join(x),
                     'type': 'count',  # compter le nombre de livres par auteur
                     'nom du fichier': lambda x: ', '.join(x)
-                }).reset_index(
+                }).reset_index()
         
         html_content = """
             <!DOCTYPE html>
