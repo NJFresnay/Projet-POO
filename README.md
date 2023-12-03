@@ -38,6 +38,7 @@ Les principales librairies Python utilisées dans notre module:
 --------------------------------------
 
 La classe `base_livre` utilise principalement les librairies `pypdf` et `EbookLib` pour extraire les méta-données des livres au format PDF ou EPUD. Cela peut être effectué à partir d'un chemin local ou d'une URL. Tout d'abord, l'extension de la ressource est vérifiée pour déterminer le type de fichier, puis en fonction de ce type, la sous-classe appropriée, soit `PDF`, soit `EPUB`, est appelée.   
+
 Ensuite, la nature de la ressource est examinée, car les librairies utilisées ne peuvent lire les fichiers que depuis un chemin local. Ainsi, si la ressource est une URL, la méthode `BytesIO` de la librarie `io` est utilisée pour stocker le fichier dans une mémoire temporaire, permettant ainsi l'extraction des méta-données. 
 
 les méthodes pour récupérer les méta-données de chaque librarie:   
@@ -94,7 +95,7 @@ La classe `bibli_scrap` est responsable de réaliser le web scraping destiné à
 
 Le paramètre `url` représente l’URL de départ pour le scraping, `profondeur` détermine le nombre maximal de sites à explorer, et `nbmax` indique le nombre maximal de documents à télécharger.   
 
-Cette classe utilise principalement la librairie `BeautifulSoup`. En particulier, la méthode `find_all` pour rechercher les liens dans la page qui appartiennent aux fichiers PDF et EPUB.  
+Cette classe utilise principalement la librairie `BeautifulSoup`. En particulier, la méthode `find_all` pour rechercher les liens dans la page qui appartiennent aux fichiers PDF et EPUB.     
 Ensuite, les fichiers sont téléchargés:  
    
 ````python
