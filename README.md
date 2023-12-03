@@ -1,22 +1,26 @@
-## Bienvenue à la documentation de nos classes!   
+## Bienvenue à la documentation de notre Module!   
 
 Réalisation du projet finale de POO 
 Rayane JAFFAL et Jennifer NGOUNA   
 Prof. Jacquelin Charbonel   
-Université d'Angers
+Université d'Angers   
+
 
 # Projet-POO : Collecte de livre   
 
 L’objectif de ce projet est de concevoir une application pour constituer et suivre une bibliothèque de livres. L’idée est de pouvoir collecter des livres (au format _EPUB_ et _PDF_) sur le web (_web scraping_) pour constituer une bibliothèque, et générer divers catalogues de cette bibliothèque.
 
-Page d'accueil : https://github.com/NJFresnay/Projet-POO.git
+Page d'accueil : https://github.com/NJFresnay/Projet-POO.git   
+
+
 
 [](#introduction)Introduction  
 -----------------------------
+Ce module se compose de quatre classes: la classe `base_livre` qui englobe les sous-classes `PDF` et `EPUB`, la classe `base_bibli` avec la sous-classe `simple_bibli`, la classe `bibli`, et enfin la classe `bibli_scrap`.   
 
 
-[](#_pré_requis)Pré-requis
---------------------------
+[](#_librairies_python)Librairies Python   
+----------------------------------------
 
 La classe abstraite ci-dessous modélise un livre :
 ````python
