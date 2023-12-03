@@ -1,12 +1,14 @@
-# Projet-POO
-Réalisation du projet de fin de POO ( Rayane JAFFAL et Jennifer NGOUNA)   
+## Bienvenue à la documentation de nos classes!   
+
+Réalisation du projet finale de POO 
+Rayane JAFFAL et Jennifer NGOUNA
 Prof. Jacquelin Charbonel   
 Université d'Angers
 
-Collecte de livres
-==================
+# Projet-POO : Collecte de livre
+================================
 
-L’objectif est de concevoir une application pour constituer et suivre une bibliothèque de livres. L’idée est de pouvoir collecter des livres sur le web (_web scraping_) pour constituer une bibliothèque, et générer divers catalogues de cette bibliothèque. On s’intéresse ici aux livres au format _EPUB_ et _PDF_. Mais l’application doit être extensible de façon à pouvoir facilement ajouter d’autres formats.
+L’objectif de ce projet est de concevoir une application pour constituer et suivre une bibliothèque de livres. L’idée est de pouvoir collecter des livres (au format _EPUB_ et _PDF_) sur le web (_web scraping_) pour constituer une bibliothèque, et générer divers catalogues de cette bibliothèque.
 
 [](#_modalités)Modalités
 ------------------------
