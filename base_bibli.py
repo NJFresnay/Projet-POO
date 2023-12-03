@@ -3,7 +3,7 @@ import shutil
 import os
 import pandas as pd
 from ebooklib import epub
-from weasyprint import HTML #librairie utiliser pour transformer du contenu html en pdf
+from weasyprint import HTML   #librairie utiliser pour transformer du contenu html en pdf
 
 
 """"  Afin de créer une instance de la classe base_bibli il faudra lui passer en argument le chemin vers 
@@ -16,9 +16,8 @@ class base_bibli:
 
     def ajouter(self,livre):
         """Ajoute le livre à la bibliothèque """
-        if isinstance(livre, base_livre.PDF) or  isinstance(livre, base_livre.EPUB):
-            shutil.copy2(livre.ressource, self.path)  # on copie le livre directement dans le répertoire courant
-            print(" Ajout effectué avec succès! ")
+        if livre.endswith(".pdf") or  livre.endswith(".epub"):
+            shutil.copy2(livre.ressource, self.path)  # on copie le livre directement dans la bibliothèque depuis sa source
         raise NotImplementedError(" format non pris en charge ")
 
     def rapport_livres(self, format, fichier):
@@ -47,7 +46,7 @@ class base_bibli:
                         'nom du fichier': lambda x : ', '.join(x),
                         }).reset_index()
         
-        #html_table est notre dataframe de donnees transformer en fichier html
+        #html_table est notre dataframe de données transformer en fichier html
         contenu_html = """
                     <!DOCTYPE html>
                     <html lang="fr">
