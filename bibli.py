@@ -1,6 +1,6 @@
 import base_bibli
 from bs4 import BeautifulSoup
-
+#pourquoi t a pas juste hériter de bibli_scrap parce que bibli_scrap hérite de base_bibli, tu as juste répeter le code de scrapping. No?
 
 class bibli(base_bibli):
     def ___init__(self, path):
