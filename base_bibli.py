@@ -3,8 +3,11 @@ import shutil
 import os
 import pandas as pd
 from ebooklib import epub
-from weasyprint import HTML
+from weasyprint import HTML #librairie utiliser pour transformer du contenu html en pdf
 
+
+""""  Afin de créer une instance de la classe base_bibli il faudra lui passer en argument le chemin vers 
+        le répertoire qui vous servira de bibliothèque"""
 
 class base_bibli:
     def __init__(self,path):
@@ -14,40 +17,9 @@ class base_bibli:
     def ajouter(self,livre):
         """Ajoute le livre à la bibliothèque """
         if isinstance(livre, base_livre.PDF) or  isinstance(livre, base_livre.EPUB):
-            shutil.copy2(livre.ressource, self.path) # on copie le livre directement dans le répertoire courant
+            shutil.copy2(livre.ressource, self.path)  # on copie le livre directement dans le répertoire courant
             print(" Ajout effectué avec succès! ")
         raise NotImplementedError(" format non pris en charge ")
-
-    def rapport_livres(self,format,fichier):
-        """
-            Génère un état des livres de la bibliothèque.
-            Il contient la liste des livres,
-            et pour chacun d'eux
-            son titre, son auteur, son type (PDF ou EPUB), et le nom du fichier correspondant.
-
-            format: format du rapport (PDF ou EPUB)
-            fichier: nom du fichier généré
-        """
-        raise NotImplementedError("à définir dans les sous-classes")
-
-    def rapport_auteurs(self,format,fichier):
-        """
-            Génère un état des auteurs des livres de la bibliothèque.
-            Il contient pour chaque auteur
-            le titre de ses livres en bibliothèque et le nom du fichier correspondant au livre.
-            le type (PDF ou EPUB),
-            et le nom du fichier correspondant.
-
-            format: format du rapport (PDF ou EPUB)
-            fichier: nom du fichier généré
-        """
-        raise NotImplementedError("à définir dans les sous-classes")
-
-
-class simple_bibli(base_bibli):
-
-    def __init__(self,path):
-        super().__init__(path)
 
     def rapport_livres(self, format, fichier):
         contenu_html = """
@@ -105,10 +77,11 @@ class simple_bibli(base_bibli):
     def donnees_bibliotheque(self):
         """ Cette méthode récupère les éléments du répertoire courant et les stocke dans un dataframe, afin de faciliter
             l'extraction d'informations utiles pour le rapport"""
+        
         book_metadata = []
         book_paths = []
         for i in os.listdir(self.path): # pour parcourir les éléments du répertoire 
-            chemin_file = os.path.join(self.path, i)#concatène le chemin du repertoire a celui de l'element pour déterminer le chemin du livre
+            chemin_file = os.path.join(self.path, i)#concatène le chemin du répertoire a celui de l'element pour déterminer le chemin du livre
             book_paths.append(chemin_file)
             for path in book_paths:
                 try:
@@ -120,7 +93,7 @@ class simple_bibli(base_bibli):
                     df = pd.DataFrame(book_metadata, columns=['titre','auteur','type', 'nom du fichier'])
                     df_sort = df.sort_value(by='titre')
                 except:
-                    raise IOError(f"Error processing {path}: {str(e)}")      
+                    raise IOError(f" Error processing {path}")      
         return df_sort
 
     def genere_rapport(self,contenu_html,format,fichier):
@@ -146,4 +119,8 @@ class simple_bibli(base_bibli):
                 print(f"Rapport généré au format {format}, nom du fichier : {fichier}")
         except IOError:
             raise NotImplementedError(" format non pris en charge ")
-    
+
+class simple_bibli(base_bibli):
+
+    def __init__(self,path):
+        super().__init__(path)
