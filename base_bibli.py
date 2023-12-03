@@ -91,6 +91,14 @@ class base_bibli:
         try:
             if format == "PDF":
                 #on transforme le texte html directement en fichier pdf
+                import pdfkit
+                #rayane: cette librairie besoin de cette tool wkhtmltopdf pour quell marche je vais essayer
+                pdfkit_options = {
+                    'wkhtmltopdf': '/path/to/wkhtmltopdf',  # Set the correct path
+                }
+                
+                pdfkit.from_string(html_content, fichier, options=pdfkit_options)
+
                 pdfkit.from_string(html_content, fichier)
                 return f"Rapport généré au format {format}, nom du fichier : {fichier}"
 
