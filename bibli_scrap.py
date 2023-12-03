@@ -12,16 +12,16 @@ class bibli_scrap(base_bibli):
         if profondeur == 0 or nbmax == 0: #si les arguments sont zero on sort
             return #ça return None 
         
-        directory = self.bibli_path #je détermine le directoire
+        directory = self.bibli_path #je détermine le répertoire 
         
-        if not os.path.exists(directory): #si le directoire n'existe pas on la créer
+        if not os.path.exists(directory): #si le répertoire n'existe pas on le crée
             os.makedirs(directory)
         
         try:
             html_page = requests.get(url, verify=False).content
             soup = BeautifulSoup(html_page, "html.parser")
 
-            for l in soup.find_all("a"): #ici on cherche les lien
+            for l in soup.find_all("a"): #ici on cherche les liens
                 lien = l.get('href', []) #on extract les liens
                 if lien.endswith('.pdf') or lien.endswith('.epub'): 
                     try:
@@ -29,12 +29,12 @@ class bibli_scrap(base_bibli):
                             lien = url + lien #ajouter le nom du server au lien incomplet
                         reponse = requests.get(lien, verify =False)
                         
-                        filename = os.path.join(directory, os.path.basename(lien)) #nommer le fichier de chaque livre selon le nom du base du lien
+                        filename = os.path.join(directory, os.path.basename(lien)) #nommer le fichier de chaque livre selon le nom de base du lien
                         
                         with open(filename, mode="wb") as file: #télechargement
                             file.write(reponse.content)
                         i +=1
-                        if i >= nbmax: #on a dépasser le nombre maw des fichier à télécharger
+                        if i >= nbmax: #on a dépasser le nombre max des fichier à télécharger
                             break
                         
                     except requests.exceptions.RequestException as e:
