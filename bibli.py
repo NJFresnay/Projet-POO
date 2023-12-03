@@ -16,6 +16,6 @@ class bibli(base_bibli, bibli_scrap):
     def alimenter(self, url, profondeur, nbmax):
         profondeur = 1
         if os.path.exists(url): #si c'est un fichier sur notre machine appelle 'ajouter()'
-            return self.ajouter(url)
+            return base_bibli.ajouter(url)
         else:  #sinon c'est une url, appelle 'scrap()'
-            return self.scrap(url, profondeur, nbmax)        
+            return bibli_scrap.scrap(url, profondeur, nbmax)        
