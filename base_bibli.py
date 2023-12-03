@@ -97,7 +97,7 @@ class base_bibli:
             print(" Données non accessibles!")
             
             
- def genere_rapport(self,format,fichier,html_content):
+    def genere_rapport(self,format,fichier,html_content):
         try:
             if format == "PDF":
                 #on transforme le texte html directement en fichier pdf
