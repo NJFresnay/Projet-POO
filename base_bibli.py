@@ -3,7 +3,7 @@ import shutil
 import os
 import pandas as pd
 from ebooklib import epub
-import xhtml2pdf
+import pdfkit
 
 """"  Afin de créer une instance de la classe base_bibli il faudra lui passer en argument le chemin vers 
         le répertoire qui vous servira de bibliothèque"""
@@ -38,9 +38,13 @@ class base_bibli:
                     """
         return self.genere_rapport(format, fichier,html_content)
              
-    def rapport_auteurs(self, format, fichier):
-        # Construire le contenu HTML du rapport_auteurs
-        auteurs_info = self.donnees().groupby('auteur')
+  def rapport_auteurs(self, format, fichier):
+        # Construire le contenu HTML du rapport
+        grouped_df = df.groupby('auteur').agg({
+                    'titre': lambda x: ', '.join(x),
+                    'type': 'count',  # compter le nombre de livres par auteur
+                    'nom du fichier': lambda x: ', '.join(x)
+                }).reset_index(
         
         html_content = """
             <!DOCTYPE html>
@@ -49,23 +53,29 @@ class base_bibli:
                 <title>Rapport des Auteurs</title>
             </head>
             <body>
-                <h1>État des les livres classés par auteurs</h1>
+                <h1>État des livres classés par auteurs</h1>
             """
         
-        for auteur, livres in auteurs_info.items(): #rayane: 'DataFrameGroupBy' object has no attribute 'items' cette erreur affiche avec les pdf et les epub
-            html_content += f"<h2>{auteur}</h2>"
-            html_content += "<ul>"
-            for livre in livres:
-                html_content += f"<li>{livre['titre']} - {livre['type']} - {livre['nom du fichier']}</li>"
-            html_content += "</ul>"
+        for index, row in agrouped_df.iterrows():
 
+                html_content += "<h4> {row['auteur']}</h4>"
+                html_content += "<ul>"
+        
+                for t,f,n in zip(row['titre'], row['type'], row['nom du fichier']):
+                
+                        html_content += """
+                            <li>
+                                Titre : {t}
+                                Format: {f}
+                                nom du fichier :{{n}}<br>
+                            </li>"""
+                        html_content += "</ul>"
         html_content += """
                             </body>
                         </html>
                     """
         return self.genere_rapport(format, fichier, html_content)
-               
-    
+          
 
     def donnees(self):
         try:
@@ -87,31 +97,15 @@ class base_bibli:
             print(" Données non accessibles!")
             
             
-    def genere_rapport(self,format,fichier,html_content):
+ def genere_rapport(self,format,fichier,html_content):
         try:
             if format == "PDF":
-                # je vais essayer ce code
-                # alors ça xhtml2pdf ne marche pas je vais chercher autre 
-                #je vais ressayer le weasyprint ne marche plus parce que y a un classe de meme nom
-                
-
-                def generate_report(html_content, fichier, format="pdf"):
-                    # rayane: cette librairie n'a pas besoin d'une tool wkhtmltopdf
-                    xhtml2pdf.write(html_content, fichier)
-                    return f"Rapport généré au format {format}, nom du fichier : {fichier}"
-
-                """
                 #on transforme le texte html directement en fichier pdf
-                import pdfkit
-                #rayane: cette librairie besoin d'une tool wkhtmltopdf mais c'est compliqué je vais essyer une autre
                 pdfkit.from_string(html_content, fichier)
                 return f"Rapport généré au format {format}, nom du fichier : {fichier}"
-                """
 
             elif format == "EPUB":
                 book = epub.EpubBook() # crée l'objet  de type EPUB
-                #On ajoute un titre
-                book.set_title("rapport de livres")
                 # on crée une section pour le rapport
                 section = epub.EpubHtml(title="Rapport Livres", file_name="rapport.html", lang="fr")
                 section.content = html_content #  on defini le contenu de la section
@@ -123,8 +117,7 @@ class base_bibli:
                 epub.write_epub(fichier, book, {})
                 return f"Rapport généré au format {format}, nom du fichier : {fichier}"
         except:
-            raise NotImplementedError(" format non pris en charge ") #rayane:pour les pdf elle affiche tjrs l'erreur
-            
-            
+            raise NotImplementedError(" format non pris en charge ")
+    
    
             
