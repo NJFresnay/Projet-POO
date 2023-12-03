@@ -1,5 +1,5 @@
 #classe base_livre
-#sous classes: PDF, EPUB
+#sous classes: PDF, EPUB 
 import os
 import requests
 import tempfile
