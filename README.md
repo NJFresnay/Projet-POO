@@ -65,55 +65,28 @@ f.metadata.creation_date
 ````
 
    
-[](#_étape_ii)Étape II
-----------------------
+[](#_la_bibliothèque)La Bibliothèque   
+------------------------------------
 
-Entre le 4/12/2023 et le 6/12/2023,
 
-Parcourez le travail réalisé par les autres binômes. Vous allez peut-être découvrir que certains ont fait un travail plus clair, plus réutilisable, plus maintenable ou plus performant que le vôtre. Ce n’est pas grave, c’est comme cela que l’on progresse. C’est pourquoi vous avez ici la possibilité de réaliser l’étape III en utilisant l’étape I d’un autre binôme. Dans ce cas, intégrez son code dans votre dépot git \[[2](#_footnotedef_2 "View footnote.")\].
+      
 
-Enfin, chaque binôme rebascule son dépot github en privé le 6/12/2023.
+[](#les_rapports)Les Rapports    
+-----------------------------    
 
-[](#_étape_iii)Étape III
-------------------------
 
-En utilisant la bibliothèque choisie, concevoir une application `bibli` s’utilisant comme :
+      
+
+[](#web_scraping)Web Scraping   
+-----------------------------   
+La classe `bibli_scrap` réalise un web scraping destiné à alimenter la bibliothèque. Cette classe est dotée d'une méthode `scrap` qui a 3 paramètres : `url`, `profondeur` et `nbmax`. Elle récupère la page web référencée par url, puis télécharge tous les ressources PDF et EPUB qui y sont référencées. Ensuite, elle extrait de cette page tous les liens vers d’autres pages web, et réitère le processus précédent sur chacune d’elles. Le processus se réitère jusqu’à ce que l’un des critères d’arrêt soit vérifié.
+`url` est l’URL de départ du scraping. `profondeur` est le nombre maximal de sites à parcourir. `nbmax` est le nombre maximal de documents à télécharger.   
+Cette classe utilise principalement la librairie `BeautifulSoup`. Avec la méthode `find_all` on cherche les liens dans la page qui appartiennent aux fichiers PDF et EPUB. Ensuite on télécharge les fichiers:  
+   
+````python
+#téléchargement
+with open(filename, mode="wb") as file: #télechargement
+                            file.write(reponse.content)
 ````
-$ ./bibli https://math.univ-angers.fr/~jaclin/biblio/livres 1
-````
-pour lancer une collecte de profondeut 1 visant à compléter la bibliothèque, et :
-````
-$ ./bibli rapports
-````
-pour générer les 2x2 rapports au format EPUB et PDF \[[3](#_footnotedef_3 "View footnote.")\].
 
-L’application utilise un fichier de configuration `bibli.conf` contenant :
-
-*   le nom du répertoire destiné à recevoir les livres récoltés,
-    
-*   le nom du répertoire destiné à recevoir les rapports,
-    
-*   le nombre max de livres à rapatrier à chaque collecte (sécurité pour ne pas exploser le disque).
-    
-
-Exemple :
-
-fichier biblio.conf
-````
-bibliotheque=/tmp/bibli/livres
-etats=/tmp/bibli/etats
-nbmax=1000
-````
-Pour permettre à l’application de pouvoir gérer plusieurs jeux de paramètres (par exemple plusieurs bibliothèques), le nom du fichier de configuration peut être spécifié avec l’option `-c`. Par exemple :
-````
-$ ./bibli -c bibli2.conf https://math.univ-angers.fr/~jaclin/biblio/livres 1
-````
-ou bien
-````
-$ ./bibli -c bibli2.conf rapports
-````
-Rédiger une petite documentation d’une page pour les utilisateurs de l’application (guide d’utilisation). Ne pas oublier de mentionner le binôme auprès duquel la partie I a été récupérée.
-
-Chacun des 2 binômes dépose alors ses codes sources, le fichier de configuration et la documentation sur son espace Moodle, et part en vacance de Noël la tête vidée.
-
-* * *
+il me reste la partie profondeur
