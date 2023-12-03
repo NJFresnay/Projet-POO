@@ -14,13 +14,13 @@ class base_bibli:
         """ path désigne le répertoire contenant les livres de cette bibliothèque """
         self.path = path
 
-    def ajouter(self,livre): 
+    def ajouter(self,livre): #rayane: cette fonction excute toujours l'erreur
         """Ajoute le livre à la bibliothèque """
         if livre.endswith(".pdf") or livre.endswith(".epub"):
             shutil.copy(livre, self.path)# on copie le livre directement dans la bibliothèque depuis sa source
         raise NotImplementedError(" format non pris en charge ")
 
-    def rapport_livres(self, format,fichier):
+    def rapport_livres(self, format,fichier): #rayane: marche seulement avec les epub
         #contenu html du rapport_livres
         html_content = """
             <!DOCTYPE html>
@@ -52,7 +52,7 @@ class base_bibli:
                 <h1>État des les livres classés par auteurs</h1>
             """
         
-        for auteur, livres in auteurs_info.items():
+        for auteur, livres in auteurs_info.items(): #rayane: 'DataFrameGroupBy' object has no attribute 'items' cette erreur affiche avec les pdf et les epub
             html_content += f"<h2>{auteur}</h2>"
             html_content += "<ul>"
             for livre in livres:
@@ -109,7 +109,7 @@ class base_bibli:
                 epub.write_epub(fichier, book, {})
                 return f"Rapport généré au format {format}, nom du fichier : {fichier}"
         except:
-            raise NotImplementedError(" format non pris en charge ")
+            raise NotImplementedError(" format non pris en charge ") #rayane:pour les pdf elle affiche tjrs l'erreur
             
             
    
