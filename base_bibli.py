@@ -3,7 +3,7 @@ import shutil
 import os
 import pandas as pd
 from ebooklib import epub
-import pdfkit
+import xhtml2pdf
 
 """"  Afin de créer une instance de la classe base_bibli il faudra lui passer en argument le chemin vers 
         le répertoire qui vous servira de bibliothèque"""
@@ -93,6 +93,13 @@ class base_bibli:
                 # je vais essayer ce code
                 # alors ça xhtml2pdf ne marche pas je vais chercher autre 
                 #je vais ressayer le weasyprint ne marche plus parce que y a un classe de meme nom
+                
+
+                def generate_report(html_content, fichier, format="pdf"):
+                    # rayane: cette librairie n'a pas besoin d'une tool wkhtmltopdf
+                    xhtml2pdf.write(html_content, fichier)
+                    return f"Rapport généré au format {format}, nom du fichier : {fichier}"
+
                 """
                 #on transforme le texte html directement en fichier pdf
                 import pdfkit
