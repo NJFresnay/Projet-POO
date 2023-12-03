@@ -1,8 +1,8 @@
 #classe base_livre
 #sous classes: PDF, EPUB
-import io 
 import os
 import requests
+import tempfile
 from ebooklib import epub  #librairie pour traiter les documents de type "epub" #pip install EbookLib #EbookLib 0.18
 from pypdf import PdfReader #librairie pour traiter les documents de type "pdf" #pip install pypdf #pypdf 3.17.1
 
@@ -40,7 +40,11 @@ class PDF(base_livre):
         if "://" in self.ressource: #on voit si la ressource est un URL
             response = requests.get(self.ressource, verify=False) #on ouvert le URL
             if response.status_code == 200: #succès 
-                self.ressource = PdfReader(io.BytesIO(response.content)) #maitenant notre librarie pypdf peut lire le fichier (elle ne prend pas des URL by default)
+                 with tempfile.NamedTemporaryFile(delete=False) as temp_fichier: # Télecharger le contenu dans un fichier temporaire
+                    temp_fichier.write(response.content)
+                    temp_nom = temp_fichier.name
+
+                self.ressource = PdfReader(temp_nom) # Lire le PDF du fichier temporaire
             else:
                 raise FileNotFoundError("ressource inaccessible") 
         else:
@@ -70,7 +74,11 @@ class EPUB(base_livre):
         if "://" in self.ressource: #on voit si la ressource est un URL
             response = requests.get(self.ressource,verify=False)  #on ouvert le URL
             if response.status_code == 200: #succès 
-                self.ressource = epub.read_epub(io.BytesIO(response.content)) #maitenant notre librarie ebooklib peut lire le fichier (elle ne prend pas des URL by default)
+                with tempfile.NamedTemporaryFile(delete=False) as temp_fichier: # Télecharger le contenu dans un fichier temporaire
+                    temp_fichier.write(response.content)
+                    temp_nom = temp_fichier.name
+
+                self.ressource = epub.read_epub(temp_nom) # Lire le EPUB du fichier temporaire
             else:
                 raise FileNotFoundError("ressource inaccessible")
 
