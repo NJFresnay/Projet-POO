@@ -14,7 +14,7 @@ class base_bibli:
         """ path désigne le répertoire contenant les livres de cette bibliothèque """
         self.path = path
 
-    def ajouter(self,livre): #rayane: cette fonction excute toujours l'erreur
+    def ajouter(self,livre): #rayane: cette fonction excute toujours l'erreur, le code me semble ça va mais tjrs il ne trouve pas le path de fichier à copuer si ça marche avec toi maintenat ça va 
         """Ajoute le livre à la bibliothèque """
         if livre.endswith(".pdf") or livre.endswith(".epub"):
             shutil.copy(livre, self.path)# on copie le livre directement dans la bibliothèque depuis sa source
