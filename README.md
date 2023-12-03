@@ -63,6 +63,17 @@ f.metadata.subject
 f.metadata.creation_date
 
 ````
+Exemple d'utilisation de cette classe:  
+
+````python
+livre = base_livre("path or URL")
+livre.type()
+livre.titre()
+livre.auteur()
+livre.langue()
+livre.sujet()
+livre.date()
+````
 
    
 [](#_la_bibliothèque)La Bibliothèque   
@@ -79,14 +90,24 @@ f.metadata.creation_date
 
 [](#web_scraping)Web Scraping   
 -----------------------------   
-La classe `bibli_scrap` réalise un web scraping destiné à alimenter la bibliothèque. Cette classe est dotée d'une méthode `scrap` qui a 3 paramètres : `url`, `profondeur` et `nbmax`. Elle récupère la page web référencée par url, puis télécharge tous les ressources PDF et EPUB qui y sont référencées. Ensuite, elle extrait de cette page tous les liens vers d’autres pages web, et réitère le processus précédent sur chacune d’elles. Le processus se réitère jusqu’à ce que l’un des critères d’arrêt soit vérifié.
-`url` est l’URL de départ du scraping. `profondeur` est le nombre maximal de sites à parcourir. `nbmax` est le nombre maximal de documents à télécharger.   
-Cette classe utilise principalement la librairie `BeautifulSoup`. Avec la méthode `find_all` on cherche les liens dans la page qui appartiennent aux fichiers PDF et EPUB. Ensuite on télécharge les fichiers:  
+La classe `bibli_scrap` est responsable de réaliser le web scraping destiné à alimenter la bibliothèque. Elle est dotée d'une méthode nommée `scrap` qui prends trois paramètres : `url`, `profondeur` et `nbmax`. Cette méthode récupère la page web référencée par url, puis télécharge tous les fichiers PDF et EPUB qui y sont référencés. Ensuite, elle extrait tous les liens vers d’autres pages web de cette page, répetant le processus sur chacune d’entre elles. Ce cycle se répète jusqu’à ce que l’un des critères d’arrêt soit satisfait.  
+
+Le paramètre `url` représente l’URL de départ pour le scraping, `profondeur` détermine le nombre maximal de sites à explorer, et `nbmax` indique le nombre maximal de documents à télécharger.   
+
+Cette classe utilise principalement la librairie `BeautifulSoup`. En particulier, la méthode `find_all` pour rechercher les liens dans la page qui appartiennent aux fichiers PDF et EPUB.  
+Ensuite, les fichiers sont téléchargés:  
    
 ````python
 #téléchargement
 with open(filename, mode="wb") as file: #télechargement
-                            file.write(reponse.content)
+    file.write(reponse.content)
 ````
 
-il me reste la partie profondeur
+Exemple d'utilisation de cette classe:  
+
+````python
+path = bibli_scrap(r"C:\Users\jaffa\OneDrive\Desktop\Bibliotheque") #le directoire où sauvegarder les fichiers
+path.scrap("https://math.univ-angers.fr/~jaclin/biblio/livres/", 1, 2) #récupérer de cette page web
+````
+
+il me reste le profondeur....
