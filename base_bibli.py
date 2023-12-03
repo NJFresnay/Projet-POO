@@ -4,6 +4,8 @@ import os
 import pandas as pd
 from ebooklib import epub
 import pdfkit
+from weasyprint import HTML
+from weasyprint.pdf import PDF
 
 """"  Afin de créer une instance de la classe base_bibli il faudra lui passer en argument le chemin vers 
         le répertoire qui vous servira de bibliothèque"""
@@ -92,6 +94,10 @@ class base_bibli:
             if format == "PDF":
                 # je vais essayer ce code
                 # alors ça xhtml2pdf ne marche pas je vais chercher autre 
+                #je vais ressayer le weasy
+                pdf = HTML(string=html_content).write_pdf()  
+                with open('fichier.pdf', 'wb') as f:
+                        f.write(pdf)
                 """
                 #on transforme le texte html directement en fichier pdf
                 import pdfkit
