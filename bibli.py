@@ -7,7 +7,7 @@ import os
 
 class bibli(base_bibli, bibli_scrap):
     
-    def ___init__(self, path):
+    def __init__(self, path):
         """ Vous devez lui passer en arguments le chemin vers le répertoire
             qui vous servira de bibliothèque"""
         base_bibli.__init__(path)
