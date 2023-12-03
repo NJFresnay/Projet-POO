@@ -83,7 +83,7 @@ Cette classe est en cours de maintenance. La méthode `ajouter()` et l'affichage
 La classe `base_bibli` qui prend en paramètre un `path`(lien vers la bibliothèque) permet de stocker et référencier tous les livres présents dans notre bibliothèque(dans un répertoire sur notre machine). 
 Elle est dotée de cinq méthodes:
 - `ajouter(ressource)`: qui ajoute un livre directement dans notre répertoire. `path` est la ressource du livre.
-- `donnees_bibliotheque()`: qui récupère tous les fichiers présents dans notre répertoire sous forme de dataframe.
+- `donnees()`: qui récupère tous les fichiers présents dans notre répertoire sous forme de dataframe.
 - `genere_rapport(contenu_html, format,fichier)`: qui selon le type de format passé en argument "PDF" ou "EPUB", retourne un fichier créer à partir d'un contenu html(afin de faciliter la transorformation en pdf ou epub)
 - `rapport_livres` : génère un rapport sur l'état des livres de notre bibliothèque. Et fournit des informations comme le titre du livre, son ou ses auteur(s), son format et le nom du fichier sous lequel il est stocké dans le répertoire.
 - `rapport_auteurs`: génère un rapport sur l'état des livres de notre bibliothèque, Ici les livres sont groupés par auteur, cela permet l'accès à toutes les oeuvres d'un même auteur, et leurs titres, format et nom de fichier. 
@@ -105,6 +105,9 @@ ma_bibliotheque.rapport_livres("PDF", "Mon rapport.pdf")
 ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.pdf") 
 
 ````
+
+Point important les méthodes 'ajouter()" et 'rapport_livres()' ou 'rapport_auteurs()' au format `pdf` uniquement sont en cours d'amélioration car elles présentent des disfonctionnemens que l'on corrigera dans des plus bref délais. 
+
 
 [](#_bibli)La Bibliothèque   
 -----------------------------    
