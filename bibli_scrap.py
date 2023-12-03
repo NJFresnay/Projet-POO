@@ -8,7 +8,7 @@ class bibli_scrap(base_bibli):
         super().__init__(path) #hérite le lien du répertoire où télecharger les livres de la classe base_bibli 
         
     def scrap(self, url, profondeur, nbmax):
-        i = 0 #initialiser le compteur
+        
         if profondeur == 0 or nbmax == 0: #si les arguments sont zero on sort
             return #ça return None 
         
@@ -33,13 +33,26 @@ class bibli_scrap(base_bibli):
                         
                         with open(filename, mode="wb") as file: #télechargement
                             file.write(reponse.content)
-                        i +=1
-                        if i >= nbmax: #on a dépasser le nombre max des fichier à télécharger
+                        nbmax -= 1
+                        if nbmax <= 0: #on a dépasser le nombre max des fichier à télécharger
                             break
                         
                     except requests.exceptions.RequestException as e:
                         print(f"Erreur du téléchargement {lien}: {e}")
                         
+            for l in soup.find_all("a"): #ici on cherche les liens pour passer à des autres pages web
+                    next_lien = l.get('href',[]) #on extract les liens
+                    if next_lien.endswith('.pdf') or next_lien.endswith('.epub'): 
+                        continue #on cherche pas des liens des livres ici
+                    try:
+                        if 'https://' not in next_lien:
+                            next_lien = url + next_lien #ajouter le nom du server au lien incomplet
+                        if nbmax > 0: 
+                            self.scrap(next_lien, profondeur - 1, nbmax) #recursion
+                        
+                    except requests.exceptions.RequestException as e:
+                        print(f"Erreur traitement {next_lien}: {e}")
+        
         except requests.exceptions.RequestException as e:
             print(f"Un erreur inattendu: {e}")
             
