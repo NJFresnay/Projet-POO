@@ -1,19 +1,17 @@
 # Bienvenue à la documentation de notre Module!   
 
-Réalisation du projet finale de POO   
+Réalisation du projet final de POO   
 Rayane JAFFAL et Jennifer NGOUNA   
 Prof. Jacquelin Charbonel   
 Université d'Angers        
 
     
 
-## Projet-POO : Collecte de livres   
+## Projet-POO : Collecte de livres à l'aide du web scraping 
 
 L’objectif de ce projet est de concevoir une application pour constituer et suivre une bibliothèque de livres. L’idée est de pouvoir collecter des livres (au format _EPUB_ et _PDF_) sur le web (_web scraping_) pour constituer une bibliothèque, et générer divers catalogues de cette bibliothèque.
 
 Page d'accueil : https://github.com/NJFresnay/Projet-POO.git     
-
-   
 
 
 
@@ -26,8 +24,8 @@ Ce module se compose de quatre classes: la classe `base_livre` qui englobe les s
 [](#_librairies_python)Librairies Python   
 ----------------------------------------
 Les principales librairies Python utilisées dans notre module:
-- `pypdf` qui interagit avec les fichiers de format PDF [description](https://pypi.org/project/pypdf/)
-- `EbookLib` qui interagit avec les fichiers de format EPUB [description](https://pypi.org/project/EbookLib/)  
+- `pypdf` qui intéragit avec les fichiers au format PDF [description](https://pypi.org/project/pypdf/)
+- `EbookLib` qui interagit avec les fichiers au format EPUB [description](https://pypi.org/project/EbookLib/)  
 - `requests` qui envoie des demandes HTTP [description](https://pypi.org/project/requests/)
 - `BeautifulSoup` qui scrape les informations des pages HTML [description](https://pypi.org/project/BeautifulSoup/)
 
@@ -79,15 +77,49 @@ livre.date()
    
 [](#_la_bibliothèque)La Bibliothèque   
 ------------------------------------
+La classe `base_bibli` qui prend en paramètre un `path`(lien vers la bibliothèque) permet de stocker et référencier tous les livres présents dans notre bibliothèque(dans un répertoire sur notre machine). 
+Elle est dotée de cinq méthodes:
+- `ajouter(ressource)`: qui ajoute un livre directement dans notre répertoire. `path` est la ressource du livre.
+- `donnees_bibliotheque()`: qui récupère tous les fichiers présents dans notre répertoire sous forme de dataframe.
+- `genere_rapport(contenu_html, format,fichier)`: qui selon le type de format passé en argument "PDF" ou "EPUB", retourne un fichier créer à partir d'un contenu html(afin de faciliter la transorformation en pdf ou epub)
+- `rapport_livres` : génère un rapport sur l'état des livres de notre bibliothèque. Et fournit des informations comme le titre du livre, son ou ses auteur(s), son format et le nom du fichier sous lequel il est stocké dans le répertoire.
+- `rapport_auteurs`: génère un rapport sur l'état des livres de notre bibliothèque, Ici les livres sont groupés par auteur, cela permet l'accès à toutes les oeuvres d'un même auteur, et leurs titres, format et nom de fichier. 
 
+La classe `simple_bibli` est une sous-classe de `base_bibli` qui sert à alimenter notre bibliothèque avec quelques livres matérialisés sous forme de fichiers situés sur la machine locale. Elle hérite des méthodes de sa classe mère.
+  
+Exemple d'utilisation de cette classe:  
 
-      
+````python
+path = bibli_scrap(r"C:\Users\jaffa\OneDrive\Desktop\Bibliotheque") #la bibliothèque où sauvegarder les fichiers
 
-[](#les_rapports)Les Rapports    
+#bibliotheque_basique = base_bibli(path) # exemple à titre indicatif
+
+ma_bibliotheque = simple_bibli(path)
+
+ma_bibliotheque.ajouter(ressource)
+
+ma_bibliotheque.rapport_livres("PDF", "Mon rapport.pdf") 
+ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.pdf") 
+
+````
+
+[](#_bibli)La Bibliothèque   
 -----------------------------    
+La classe `bibli` est la classe complète qui définit notre bibliothèque. Elle prend en argument `path` (lien vers la bibliothèque). Cette dernière hérite non seulement de `base_bibli` mais aussi de `bibli_scrap`. Elle est donc capable de faire appel à la méthode `ajouter()` (de `base_bibli`) si le livre est déja présent dans notre machine locale ou `scrap()` (de `bibli_scrap`) si `path` est une `url` afin d'ajouter des livres à notre bibliothèque.
 
+Exemple d'utilisation de cette classe:
 
-      
+````python
+path = bibli_scrap(r"C:\Users\jaffa\OneDrive\Desktop\Bibliotheque") #la bibliothèque où sauvegarder les fichiers
+
+ma_bibliotheque = bibli_scrap(path)
+
+ma_bibliotheque.alimenter(path)
+
+ma_bibliotheque.rapport_livres("PDF", "Mon rapport.pdf") 
+ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.pdf") 
+````
+     
 
 [](#web_scraping)Web Scraping   
 -----------------------------   
