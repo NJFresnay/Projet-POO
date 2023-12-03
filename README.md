@@ -28,7 +28,7 @@ Les principales librairies Python utilisées dans notre module:
 - `EbookLib` qui interagit avec les fichiers au format EPUB [description](https://pypi.org/project/EbookLib/)  
 - `requests` qui envoie des demandes HTTP [description](https://pypi.org/project/requests/)
 - `BeautifulSoup` qui scrape les informations des pages HTML [description](https://pypi.org/project/BeautifulSoup/)
-- `weasyprint` qui aide à créer des documents PDF en transformant de simples pages HTML en superbes rapports [description](https://pypi.org/project/weasyprint/)
+- `pdfkit` qui aide à créer des documents PDF en transformant de simples pages HTML [description](https://pypi.org/project/pdfkit/)
 - `shutil` est une bibliothèque standard qui offre un ensemble de fonctions haut niveau pour effectuer des opérations de manipulation de fichiers et de répertoires. Elle est particulièrement utile pour effectuer des opérations courantes telles que la copie, le déplacement, la suppression et l'archivage de fichiers et de répertoires.
 - `pandas` qui fournit des structures de données rapides et flexibles: DataFrame [description](https://pypi.org/project/pandas/)
 
