@@ -44,7 +44,7 @@ class PDF(base_livre):
                     temp_fichier.write(response.content)
                     temp_nom = temp_fichier.name
 
-                self.ressource = PdfReader(temp_nom) # Lire le PDF du fichier temporaire
+                 self.ressource = PdfReader(temp_nom) # Lire le PDF du fichier temporaire
             else:
                 raise FileNotFoundError("ressource inaccessible") 
         else:
