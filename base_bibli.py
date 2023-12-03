@@ -3,7 +3,6 @@ import shutil
 import os
 import pandas as pd
 from ebooklib import epub
-import pdfkit
 from weasyprint import HTML
 
 
