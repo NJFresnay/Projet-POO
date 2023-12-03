@@ -1,6 +1,6 @@
 # Bienvenue à la documentation de notre Module!   
 
-Réalisation du projet finale de POO 
+Réalisation du projet finale de POO   
 Rayane JAFFAL et Jennifer NGOUNA   
 Prof. Jacquelin Charbonel   
 Université d'Angers        
@@ -44,6 +44,7 @@ les méthodes pour récupérer les méta-données de chaque librarie:
 ```python
 #EbookLib
 #Pour les fichiers EPUB
+from ebooklib import epub 
 f = epub.read_epub(ressource)
 
 f.get_metadata("DC","title") #DC pour Dublin Core metadata: les meta-données essentielles 
@@ -53,8 +54,9 @@ f.get_metadata("DC","date")
 
 #pypdf
 #Pour les fichiers PDF
-
+from pypdf import PdfReader
 f = PdfReader(ressource)
+
 f.metadata.title
 f.metadata.author
 f.metadata.subject
