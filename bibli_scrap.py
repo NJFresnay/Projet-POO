@@ -47,7 +47,7 @@ class bibli_scrap(base_bibli):
                     try:
                         if 'https://' not in next_lien:
                             next_lien = url + next_lien #ajouter le nom du server au lien incomplet
-                        if nbmax > 0 and profondeur > 0: 
+                        if nbmax > 0 and profondeur > 1: #j'ai mis 1 pour le prof. car déja le code fait le scraping dans un site
                             self.scrap(next_lien, profondeur, nbmax) #recursion
                             profondeur -= 1
                         
