@@ -9,7 +9,7 @@ class bibli_scrap(base_bibli):
         
     def scrap(self, url, profondeur, nbmax):
         if profondeur == 0 or nbmax == 0: #si les arguments sont nuls on sort
-            return None 
+            return #ça return None automatiquement
         
         directory = self.path #je détermine le répertoire 
         
