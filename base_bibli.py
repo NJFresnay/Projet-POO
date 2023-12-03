@@ -91,7 +91,7 @@ class base_bibli:
         try:
             if format == "PDF":
                 #on transforme le texte html directement en fichier pdf
-                pdfkit.from_string(html_content, ficher)
+                pdfkit.from_string(html_content, fichier)
                 return f"Rapport généré au format {format}, nom du fichier : {fichier}"
 
             elif format == "EPUB":
