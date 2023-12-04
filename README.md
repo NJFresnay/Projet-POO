@@ -106,7 +106,7 @@ ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.pdf")
 
 ````
 
-Point important les méthodes 'ajouter()" et 'rapport_livres()' ou 'rapport_auteurs()' au format `pdf` uniquement sont en cours d'amélioration car elles présentent des disfonctionnemens que l'on corrigera dans des plus bref délais. 
+POINT IMPORTANT: les méthodes 'rapport_livres()' ou 'rapport_auteurs()' (au format `pdf` uniquement) sont en cours d'amélioration car elles présentent des disfonctionnemens que l'on corrigera dans des plus bref délais. La génération de rapports  au format PDF fonctionne très bien. 
 
 
 [](#_bibli)La Bibliothèque   
