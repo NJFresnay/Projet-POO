@@ -102,7 +102,7 @@ ma_bibliotheque = simple_bibli(path)
 ma_bibliotheque.ajouter(ressource)
 
 ma_bibliotheque.rapport_livres("PDF", "Mon rapport.pdf") 
-ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.pdf") 
+ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.epub") 
 
 ````
 
