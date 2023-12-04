@@ -18,24 +18,27 @@ class base_bibli:
 
     def ajouter(self,livre): 
         """Ajoute le livre à la bibliothèque """
-        if livre.endswith(".pdf") or livre.endswith(".epub"):
-            destination_path = os.path.join(self.path, os.path.basename(livre))
-
-            # on copie le livre dans la bibliothèque
-            shutil.copy(livre, destination_path)
-            print(f" {livre} a été ajouté à la bibliothèque.")
-        else:
-            print(f"Format non pris en charge pour le livre {livre}.")
+        try:
+            if (".pdf" in livre) or (".epub" in livre):
+                destination_path = os.path.join(self.path, os.path.basename(livre))
+                if os.path.exists(destination_path):
+                    print("Ce fichier est déja présent dans le répertoire")
+                else:
+                    # on copie le livre dans la bibliothèque
+                    shutil.copy(livre, self.path)
+                    print(f" {livre} a été ajouté à la bibliothèque.")
+                    #self.path=self.path
+        except:
+            print(f"Format non pris en charge pour le livre {livre}")
 
                    
     def rapport_livres(self, format, fichier):
-        # Contenu HTML du rapport
+        # Contenu HTML du rapport_livres
         df = self.donnees()
-    
         # Convertir le DataFrame en une table HTML
         html_table = df.to_html(index=False)
 
-        # Générer le contenu HTML complet
+        # Génère le contenu HTML complet
         html_content = f"""
             <!DOCTYPE html>
             <html>
@@ -48,14 +51,12 @@ class base_bibli:
             </body>
             </html>
         """
-
-        # Générer le rapport au format spécifié
+        # génère le rapport au format spécifié
         return self.genere_rapport(format, fichier, html_content)
         
-    
         
     def rapport_auteurs(self, format, fichier):
-        # Construire le contenu HTML du rapport
+        # Construire le contenu HTML du rapport_auteurs
         grouped_df = self.donnees().groupby('auteur').agg({
                 'titre': lambda x: ', '.join(x),
                 'type': lambda x: ', '.join(x),
@@ -71,17 +72,16 @@ class base_bibli:
             <body>
                 <h1>État des livres classés par auteurs</h1>
         """
-
         for index, row in grouped_df.iterrows():
-            html_content += f"<h4>{row['auteur']}</h4>"
-            html_content += "<ul>"
-            for titre, type, nom_fichier in zip(row['titre'], row['type'], row['nom du fichier']):
+            html_content += "<ul>" 
+            for titre, type, nom_fichier in zip(row['titre'].split(', '), row['type'].split(', '), row['nom du fichier'].split(', ')):
                 html_content += f"""
                     <li>
                         <p>Titre : {titre} </p>
+                        <p>Type : {type} </p>
+                        <p>Nom du fichier : {nom_fichier} </p>
                     </li>
                 """
-
             html_content += "</ul>"
 
         html_content += """
@@ -89,13 +89,13 @@ class base_bibli:
             </html>
         """
         return self.genere_rapport(format, fichier, html_content)
-
+            
 
     def donnees(self):
         try:
             file_data_list = []
             for file_name in os.listdir(self.path): # pour parcourir les éléments du répertoire 
-                file_path = os.path.join(self.path, file_name)#concatène le chemin du répertoire a celui de l'element pour déterminer le chemin du livre
+                file_path = os.path.join(self.path, file_name) #concatène le chemin du répertoire a celui de l'element pour déterminer le chemin du livre
                 book = base_livre(file_path)
                 
                 file_data= {
