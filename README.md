@@ -108,7 +108,7 @@ ma_bibliotheque.rapport_auteurs("PDF", "Mon rapport.pdf")
 
 ````
 
-POINT IMPORTANT: Afin de générer un raport au format `pdf`, il est crucial de télécharger l'exécuteur de pdfkit [#description](https://wkhtmltopdf.org/)
+POINT IMPORTANT: Afin de générer un raport au format `pdf`, il est crucial de télécharger l'exécuteur `wkhtmltopdf` de pdfkit [description](https://wkhtmltopdf.org/)
 
 Configuration nécessaire pour la génération des fichiers au format `PDF`:
 
