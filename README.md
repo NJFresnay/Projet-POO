@@ -86,8 +86,8 @@ Elle est dotée de cinq méthodes:
 - `ajouter(ressource)`: qui ajoute un livre directement dans notre répertoire. `path` est la ressource du livre.
 - `donnees()`: qui récupère tous les fichiers présents dans notre répertoire sous forme de dataframe.
 - `genere_rapport(contenu_html, format,fichier)`: qui selon le type de format passé en argument "PDF" ou "EPUB", retourne un fichier créer à partir d'un contenu html(afin de faciliter la transorformation en pdf ou epub)
-- `rapport_livres` : génère un rapport sur l'état des livres de notre bibliothèque. Et fournit des informations comme le titre du livre, son ou ses auteur(s), son format et le nom du fichier sous lequel il est stocké dans le répertoire.
-- `rapport_auteurs`: génère un rapport sur l'état des livres de notre bibliothèque, Ici les livres sont groupés par auteur, cela permet l'accès à toutes les oeuvres d'un même auteur, et leurs titres, format et nom de fichier. 
+- `rapport_livres(format, fichier)` : génère un rapport sur l'état des livres de notre bibliothèque. Et fournit des informations comme le titre du livre, son ou ses auteur(s), son format et le nom du fichier sous lequel il est stocké dans le répertoire.
+- `rapport_auteurs(format,fichier)`: génère un rapport sur l'état des livres de notre bibliothèque, Ici les livres sont groupés par auteur, cela permet l'accès à toutes les oeuvres d'un même auteur, et leurs titres, format et nom de fichier. 
 
 La classe `simple_bibli` est une sous-classe de `base_bibli` qui sert à alimenter notre bibliothèque avec quelques livres matérialisés sous forme de fichiers situés sur la machine locale. Elle hérite des méthodes de sa classe mère.
   
