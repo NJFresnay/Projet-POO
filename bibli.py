@@ -1,4 +1,4 @@
-from base_bibli import base_bibli
+from simple_bibli import simple_bibli
 import os
   
 
@@ -6,7 +6,7 @@ import os
 # Pour se faire, elle hérite des méthodes de "base_bibli" pour la génération des rapports
 # et de "bibli_scrap" pour récupérer les documents depuis l'url directement 
 
-class bibli(base_bibli):
+class bibli(simple_bibli):
     
     def __init__(self, path):
         """ Vous devez lui passer en arguments le chemin vers le répertoire
