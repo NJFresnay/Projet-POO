@@ -108,14 +108,14 @@ ma_bibliotheque.rapport_auteurs("PDF", "Mon rapport.pdf")
 
 ````
 
-POINT IMPORTANT: Afin de générer un raport au format `pdf`, il est crucial de télécharger l'exécuteur `wkhtmltopdf` de pdfkit [description](https://wkhtmltopdf.org/)
+POINT IMPORTANT: Afin de générer un raport au format `pdf`, il est crucial de télécharger l'exécuteur 'wkhtmltopdf.exe' de pdfkit [description](https://wkhtmltopdf.org/)
 
 Configuration nécessaire pour la génération des fichiers au format `PDF`:
 
 ````python
 options = { 'encoding': 'UTF-8' } # pour les problèmes d'encodage
 
-# s'assurer d'avoir télécharger 'wkhtmltopdf.exe' et de préciser le chemin vers ce dernier
+# préciser le chemin vers l'exécuteur de wkhtmltopdf
 config = pdfkit.configuration(wkhtmltopdf=r'C:\Users\user\Anaconda3\Scripts\wkhtmltox\bin\wkhtmltopdf.exe')
 
 # génération du pdf 
@@ -124,9 +124,11 @@ pdfkit.from_string(html_content, fichier, configuration=config, options= options
 
 [](#_bibli)La Bibliothèque   
 -----------------------------    
-La classe `bibli` est la classe complète qui définit notre bibliothèque. Elle prend en argument `path` (lien vers la bibliothèque). 
-Elle hérite de la `simple_bibli`, et fait appel à la méthode `ajouter()` de `simple_bibli` si le livre est déja présent dans notre machine locale.
-Et fait appel à la méthode `scrap()` de `bibli_scrap` si `path` est une `url` afin d'ajouter les livres de cette dernière à notre bibliothèque.
+La classe `bibli` est la classe complète qui définit notre bibliothèque.
+Elle prend en argument `path` (lien vers la bibliothèque). 
+Elle hérite des classes  `simple_bibli` et `bibli_scrap`
+Sa méthode 'alimenter()` fait appel à `ajouter()` de `simple_bibli` si le livre est déja présent dans notre machine locale.
+Sinon à `scrap()` de `bibli_scrap` si `path` est une `url` afin d'ajouter des livres à notre bibliothèque.
 
 Exemple d'utilisation de cette classe:
 
