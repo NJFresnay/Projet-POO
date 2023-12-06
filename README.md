@@ -78,10 +78,11 @@ print("Date:", livre.date())
    
 [](#_la_bibliothèque)La base de la bibliothèque   
 -----------------------------------------------
-Cette classe est en cours de maintenance. La méthode `ajouter()` et l'affichage des rapports en format PDF besoin de quelques modifications!
 
 La classe `base_bibli` qui prend en paramètre un `path`(lien vers la bibliothèque) permet de stocker et référencier tous les livres présents dans notre bibliothèque(dans un répertoire sur notre machine). 
+
 Elle est dotée de cinq méthodes:
+
 - `ajouter(ressource)`: qui ajoute un livre directement dans notre répertoire. `path` est la ressource du livre.
 - `donnees()`: qui récupère tous les fichiers présents dans notre répertoire sous forme de dataframe.
 - `genere_rapport(contenu_html, format,fichier)`: qui selon le type de format passé en argument "PDF" ou "EPUB", retourne un fichier créer à partir d'un contenu html(afin de faciliter la transorformation en pdf ou epub)
@@ -93,37 +94,53 @@ La classe `simple_bibli` est une sous-classe de `base_bibli` qui sert à aliment
 Exemple d'utilisation de cette classe:  
 
 ````python
-path = bibli_scrap(r"C:\Users\jaffa\OneDrive\Desktop\Bibliotheque") #la bibliothèque où sauvegarder les fichiers
-
+path = r"C:\Users\jaffa\OneDrive\Desktop\Bibliotheque" #la bibliothèque où sauvegarder les fichiers
 #bibliotheque_basique = base_bibli(path) # exemple à titre indicatif
 
 ma_bibliotheque = simple_bibli(path)
 
 ma_bibliotheque.ajouter(ressource)
 
-ma_bibliotheque.rapport_livres("PDF", "Mon rapport.pdf") 
-ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.epub") 
+ma_bibliotheque.rapport_livres("PDF", "Mon rapport.pdf")
+ma_bibliotheque.rapport_livres("EPUB", "Mon rapport.epub")
+ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.epub")
+ma_bibliotheque.rapport_auteurs("PDF", "Mon rapport.pdf")
 
 ````
 
-POINT IMPORTANT: les méthodes 'rapport_livres()' ou 'rapport_auteurs()' (au format `pdf` uniquement) sont en cours d'amélioration car elles présentent des disfonctionnemens que l'on corrigera dans des plus bref délais. La génération de rapports  au format PDF fonctionne très bien. 
+POINT IMPORTANT: Afin de générer un raport au format `pdf`, il est crucial de télécharger l'exécuteur de pdfkit [#description](https://wkhtmltopdf.org/)
 
+Configuration nécessaire pour la génération des fichiers au format `PDF`:
+
+````python
+options = { 'encoding': 'UTF-8' } # pour les problèmes d'encodage
+
+# s'assurer d'avoir télécharger 'wkhtmltopdf.exe' et de préciser le chemin vers ce dernier
+config = pdfkit.configuration(wkhtmltopdf=r'C:\Users\user\Anaconda3\Scripts\wkhtmltox\bin\wkhtmltopdf.exe')
+
+# génération du pdf 
+pdfkit.from_string(html_content, fichier, configuration=config, options= options)
+````
 
 [](#_bibli)La Bibliothèque   
 -----------------------------    
-La classe `bibli` est la classe complète qui définit notre bibliothèque. Elle prend en argument `path` (lien vers la bibliothèque). Elle hérite de la `base_bibli`, elle est donc capable de faire appel à la méthode `ajouter()` (de `base_bibli`) si le livre est déja présent dans notre machine locale. De plus elle est capable d'appeler la méthode `scrap()` (de `bibli_scrap`) si `path` est une `url` afin d'ajouter des livres à notre bibliothèque.
+La classe `bibli` est la classe complète qui définit notre bibliothèque. Elle prend en argument `path` (lien vers la bibliothèque). 
+Elle hérite de la `simple_bibli`, et fait appel à la méthode `ajouter()` de `simple_bibli` si le livre est déja présent dans notre machine locale.
+Et fait appel à la méthode `scrap()` de `bibli_scrap` si `path` est une `url` afin d'ajouter les livres de cette dernière à notre bibliothèque.
 
 Exemple d'utilisation de cette classe:
 
 ````python
 path = r"C:\Users\jaffa\OneDrive\Desktop\Bibliotheque" #la bibliothèque où sauvegarder les fichiers
 
-ma_bibliotheque = bibli_scrap(path)
-
+ma_bibliotheque = bibli(path)
 ma_bibliotheque.alimenter(path)
 
-ma_bibliotheque.rapport_livres("PDF", "Mon rapport.pdf") 
-ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.pdf") 
+ma_bibliotheque.rapport_livres("PDF", "Mon rapport.pdf")
+ma_bibliotheque.rapport_livres("EPUB", "Mon rapport.epub")
+ma_bibliotheque.rapport_auteurs("EPUB", "Mon rapport.epub")
+ma_bibliotheque.rapport_auteurs("PDF", "Mon rapport.pdf")
+
 ````
      
 
