@@ -1,18 +1,31 @@
 from bs4 import BeautifulSoup #Python library for pulling data out of HTML 
 import requests
 import os
+<<<<<<< HEAD
 import base_bibli
 
 class bibli_scrap(base_bibli):
 
     def __init__(self,path):
         super().__init__(path) #hérite le lien du répertoire où télecharger les livres de la classe base_bibli 
+=======
+from base_bibli import base_bibli
+
+class bibli_scrap(base_bibli):
+
+    def __init__(self, livres_path, rapports_path):
+        base_bibli.__init__(self, livres_path, rapports_path) #hérite le lien du répertoire où télecharger les livres de la classe base_bibli 
+>>>>>>> c1f395e (dernière mise à jour)
         
     def scrap(self, url, profondeur, nbmax):
         if profondeur == 0 or nbmax == 0: #si les arguments sont nuls on sort
             return #ça return None automatiquement
         
+<<<<<<< HEAD
         directory = self.path #je détermine le répertoire 
+=======
+        directory = self.livres_path #je détermine le répertoire 
+>>>>>>> c1f395e (dernière mise à jour)
         
         if not os.path.exists(directory): #si le répertoire n'existe pas on le crée
             os.makedirs(directory)
